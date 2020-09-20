@@ -2,7 +2,10 @@
 <html>
 <head>
     <%@ page contentType="text/html; charset=UTF-8" %>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"></script>
     <meta charset="utf-8">
     <title>Tasks</title>
 </head>
