@@ -30,7 +30,7 @@
                     description: description
                 },
                 dataType: 'json',
-                success: alert('done')
+                success: console.log('done')
             });
         }
     }
@@ -40,7 +40,7 @@
 <body>
 <form>
     <p>
-        <label for="comment">Task name:</label><br/>
+        <label for="name">Task name:</label><br/>
         <input type="text" name="task" value="enter name" id="name"/><br>
         <label for="comment">New task:</label><br/>
         <textarea id="comment" name="comment" placeholder="Description"
