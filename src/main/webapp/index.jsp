@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <%@ page contentType="text/html; charset=UTF-8" %>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <meta charset="utf-8">
     <title>Tasks</title>
@@ -17,16 +18,27 @@
         return true
     }
 
-    function sendData(){
-        if(validate()){
-
+    function sendData() {
+        if (validate()) {
+            const name = document.getElementById('name').value
+            const description = document.getElementById('comment').value
+            $.ajax({
+                type: 'POST',
+                url: '<%=request.getContextPath()%>/index',
+                data: {
+                    name: name,
+                    description: description
+                },
+                dataType: 'json',
+                success: alert('done')
+            });
         }
     }
 
 </script>
 
 <body>
-<form method="get">
+<form>
     <p>
         <label for="comment">Task name:</label><br/>
         <input type="text" name="task" value="enter name" id="name"/><br>
@@ -35,7 +47,7 @@
                   cols="30" rows="7"></textarea>
     </p>
     <p>
-        <input type="submit" value="Add new task" onclick="validate()"/>
+        <input type="submit" class="btn btn-primary" value="Add new task" onclick="sendData()"/>
     </p>
 </form>
 </body>
