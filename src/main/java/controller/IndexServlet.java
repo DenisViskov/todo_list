@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  * @version 1.0
  * @since 20.09.2020
  */
-@WebServlet("/index")
+@WebServlet(name="index", urlPatterns="/index", loadOnStartup=1)
 public class IndexServlet extends HttpServlet {
 
     /**
