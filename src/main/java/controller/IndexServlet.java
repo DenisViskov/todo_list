@@ -41,8 +41,11 @@ public class IndexServlet extends HttpServlet {
         List<Task> tasks = store.findAll();
         JSONObject json = new JSONObject();
         for (int i = 0; i < tasks.size(); i++) {
-
+            json.put(String.valueOf(i), tasks.get(i).getName());
         }
+        writer.print(json);
+        writer.flush();
+        writer.close();
     }
 
     @Override

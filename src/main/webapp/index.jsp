@@ -25,11 +25,13 @@
                 form.appendChild(h2)
                 for (key in data) {
                     const name = data[key]
-                    let radio = name + '<input type="radio" value="true" checked name=' + name + '/>Done' +
+                    let radio = document.createElement('div')
+                    radio.innerHTML = name + '<input type="radio" value="true" checked name=' + name + '/>Done' +
                         '<input type="radio" value="false" checked name=' + name + '/>Not done'
                     p.appendChild(radio)
                 }
-                let button = '<button type="submit">Update</button>'
+                let button = document.createElement('div')
+                button.innerHTML = '<button type="submit">Update</button>'
                 p.appendChild(button)
                 form.appendChild(p)
             }
@@ -79,14 +81,6 @@
     </p>
 </form>
 <form id="tasks">
-    <h2>Tasks:</h2>
-    <p>
-        <input type="radio" value="done" checked name="task"/>Done<input type="radio" value="false" checked
-                                                                         name="task"/>Not done
-    </p>
-    <p>
-        <button type="submit">Update</button>
-    </p>
 </form>
 </body>
 </html>
