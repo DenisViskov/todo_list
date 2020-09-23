@@ -11,7 +11,6 @@
 </head>
 
 
-
 <body>
 <form>
     <p>
@@ -43,6 +42,8 @@
         });
     }
 
+    var names = new Array();
+
     function collectTasks(data) {
         let p = document.createElement('p')
         let h2 = document.createElement('h2');
@@ -51,13 +52,14 @@
         form.appendChild(h2)
         for (key in data) {
             const name = data[key]
+            names[key] = name
             let radio = document.createElement('div')
             radio.innerHTML = name + '<input type="radio" value="true" checked name=' + name + '/>Done' +
                 '<input type="radio" value="false" checked name=' + name + '/>Not done'
             p.appendChild(radio)
         }
         let button = document.createElement('div')
-        button.innerHTML = '<button type="submit">Update</button>'
+        button.innerHTML = '<button type="submit" onclick="sendUpdate()">Update</button>'
         p.appendChild(button)
         form.appendChild(p)
     }
@@ -87,6 +89,28 @@
                 success: console.log('done')
             });
         }
+    }
+
+    function sendUpdate() {
+        var name
+        var selected
+        for (key in window.names) {
+            name = names[key]
+            selected = $('input[name='+ name + ']:checked').val();
+            if (select == true || select == false) {
+                break
+            }
+        }
+        $.ajax({
+            type: 'POST',
+            url: '<%=request.getContextPath()%>/index',
+            data: {
+                name: name,
+                select: select
+            },
+            dataType: 'json',
+            success: console.log('done')
+        });
     }
 
 </script>
