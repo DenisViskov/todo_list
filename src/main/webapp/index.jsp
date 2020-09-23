@@ -11,6 +11,31 @@
 </head>
 
 <script>
+    window.onload = function () {
+        $.ajax({
+            type: 'GET',
+            url: '<%=request.getContextPath()%>/index',
+            data: {request: "GET request"},
+            dataType: 'json',
+            success: function (data) {
+                let p = document.createElement('p')
+                let h2 = document.createElement('h2');
+                h2.innerText = 'Tasks:'
+                let form = document.getElementById('tasks')
+                form.appendChild(h2)
+                for (key in data) {
+                    const name = data[key]
+                    let radio = name + '<input type="radio" value="true" checked name=' + name + '/>Done' +
+                        '<input type="radio" value="false" checked name=' + name + '/>Not done'
+                    p.appendChild(radio)
+                }
+                let button = '<button type="submit">Update</button>'
+                p.appendChild(button)
+                form.appendChild(p)
+            }
+        });
+    }
+
     function validate() {
         const name = document.getElementById('name').value
         const description = document.getElementById('comment').value
@@ -51,6 +76,16 @@
     </p>
     <p>
         <input type="submit" class="btn btn-primary" value="Add new task" onclick="sendData()"/>
+    </p>
+</form>
+<form id="tasks">
+    <h2>Tasks:</h2>
+    <p>
+        <input type="radio" value="done" checked name="task"/>Done<input type="radio" value="false" checked
+                                                                         name="task"/>Not done
+    </p>
+    <p>
+        <button type="submit">Update</button>
     </p>
 </form>
 </body>
