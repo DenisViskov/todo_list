@@ -42,8 +42,6 @@
         });
     }
 
-    var names = new Array();
-
     function collectTasks(data) {
         let p = document.createElement('p')
         let h2 = document.createElement('h2');
@@ -52,11 +50,9 @@
         form.appendChild(h2)
         for (key in data) {
             const name = data[key]
-            names[key] = name
-            let radio = document.createElement('div')
-            radio.innerHTML = name + '<input type="radio" value="true" checked name=' + name + '/>Done' +
-                '<input type="radio" value="false" checked name=' + name + '/>Not done'
-            p.appendChild(radio)
+            let checkbox = document.createElement('div')
+            checkbox.innerHTML = name + '<input class="checkbox" type="checkbox" name=' + name + '/>'
+            p.appendChild(checkbox)
         }
         let button = document.createElement('div')
         button.innerHTML = '<button type="submit" onclick="sendUpdate()">Update</button>'
@@ -92,13 +88,11 @@
     }
 
     function sendUpdate() {
-        var name
-        var selected
-        for (key in window.names) {
-            name = names[key]
-            selected = $('input[name='+ name + ']:checked').val();
-            if (select == true || select == false) {
-                break
+        var name = new Array();
+        var checkboxes = document.getElementsByClassName('checkbox');
+        for (key in checkboxes) {
+            if (checkboxes[key].checked) {
+                name[key] = checkboxes[key].name
             }
         }
         $.ajax({
@@ -106,7 +100,7 @@
             url: '<%=request.getContextPath()%>/index',
             data: {
                 name: name,
-                select: select
+                selected: true
             },
             dataType: 'json',
             success: console.log('done')

@@ -51,10 +51,19 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+        if (req.getParameter("selected").equals("true")) {
+            updateTasks(req.getParameterValues("name"));
+        }
         String name = req.getParameter("name");
         String description = req.getParameter("description");
         Task task = new Task(0, name, description, Timestamp.valueOf(LocalDateTime.now()), false);
         store.add(task);
+    }
+
+    private void updateTasks(String[] names) {
+        for (String name : names) {
+
+        }
     }
 
     @Override
