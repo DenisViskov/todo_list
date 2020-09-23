@@ -25,4 +25,11 @@ public interface Store<V> extends AutoCloseable {
      * @return list
      */
     List<V> findAll();
+
+    /**
+     * Method should update task in DB
+     *
+     * @param task
+     */
+    void update(V task);
 }

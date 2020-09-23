@@ -59,6 +59,20 @@ public class HbStore implements Store<Task> {
     }
 
     /**
+     * Method execute update task in DB
+     *
+     * @param task
+     */
+    @Override
+    public void update(Task task) {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        session.update(task);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    /**
      * Method of destroy registry
      *
      * @throws Exception

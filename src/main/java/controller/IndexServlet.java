@@ -2,6 +2,7 @@ package controller;
 
 import model.Task;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 import persistence.HbStore;
 import persistence.Store;
 
@@ -52,7 +53,7 @@ public class IndexServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         if (req.getParameter("selected").equals("true")) {
-            updateTasks(req.getParameterValues("name"));
+
         }
         String name = req.getParameter("name");
         String description = req.getParameter("description");
@@ -61,8 +62,17 @@ public class IndexServlet extends HttpServlet {
     }
 
     private void updateTasks(String[] names) {
+        List<Task> all = store.findAll();
         for (String name : names) {
-
+            all.forEach(task -> {
+                if (task.getName().equals(name)) {
+                    store.update(new Task(task.getId(),
+                            task.getName(),
+                            task.getDescription(),
+                            task.getCreated(),
+                            true));
+                }
+            });
         }
     }
 
