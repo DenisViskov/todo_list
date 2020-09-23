@@ -10,6 +10,26 @@
     <title>Tasks</title>
 </head>
 
+
+
+<body>
+<form>
+    <p>
+        <label for="name">Task name:</label><br/>
+        <input type="text" name="task" value="enter name" id="name"/><br>
+        <label for="comment">New task:</label><br/>
+        <textarea id="comment" name="comment" placeholder="Description"
+                  cols="30" rows="7"></textarea>
+    </p>
+    <p>
+        <input type="submit" class="btn btn-primary" value="Add new task" onclick="sendData()"/>
+    </p>
+</form>
+<form id="tasks">
+</form>
+</body>
+</html>
+
 <script>
     window.onload = function () {
         $.ajax({
@@ -18,24 +38,28 @@
             data: {request: "GET request"},
             dataType: 'json',
             success: function (data) {
-                let p = document.createElement('p')
-                let h2 = document.createElement('h2');
-                h2.innerText = 'Tasks:'
-                let form = document.getElementById('tasks')
-                form.appendChild(h2)
-                for (key in data) {
-                    const name = data[key]
-                    let radio = document.createElement('div')
-                    radio.innerHTML = name + '<input type="radio" value="true" checked name=' + name + '/>Done' +
-                        '<input type="radio" value="false" checked name=' + name + '/>Not done'
-                    p.appendChild(radio)
-                }
-                let button = document.createElement('div')
-                button.innerHTML = '<button type="submit">Update</button>'
-                p.appendChild(button)
-                form.appendChild(p)
+                collectTasks(data)
             }
         });
+    }
+
+    function collectTasks(data) {
+        let p = document.createElement('p')
+        let h2 = document.createElement('h2');
+        h2.innerText = 'Tasks:'
+        let form = document.getElementById('tasks')
+        form.appendChild(h2)
+        for (key in data) {
+            const name = data[key]
+            let radio = document.createElement('div')
+            radio.innerHTML = name + '<input type="radio" value="true" checked name=' + name + '/>Done' +
+                '<input type="radio" value="false" checked name=' + name + '/>Not done'
+            p.appendChild(radio)
+        }
+        let button = document.createElement('div')
+        button.innerHTML = '<button type="submit">Update</button>'
+        p.appendChild(button)
+        form.appendChild(p)
     }
 
     function validate() {
@@ -66,21 +90,3 @@
     }
 
 </script>
-
-<body>
-<form>
-    <p>
-        <label for="name">Task name:</label><br/>
-        <input type="text" name="task" value="enter name" id="name"/><br>
-        <label for="comment">New task:</label><br/>
-        <textarea id="comment" name="comment" placeholder="Description"
-                  cols="30" rows="7"></textarea>
-    </p>
-    <p>
-        <input type="submit" class="btn btn-primary" value="Add new task" onclick="sendData()"/>
-    </p>
-</form>
-<form id="tasks">
-</form>
-</body>
-</html>
