@@ -53,7 +53,7 @@ public class IndexServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         if (req.getParameter("selected").equals("true")) {
-
+            String[] parameterValues = req.getParameterValues("name[]");
         }
         String name = req.getParameter("name");
         String description = req.getParameter("description");
