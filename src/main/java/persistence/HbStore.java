@@ -10,6 +10,8 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import java.util.List;
 
 /**
+ * Class is an HbStore
+ *
  * @author Денис Висков
  * @version 1.0
  * @since 20.09.2020

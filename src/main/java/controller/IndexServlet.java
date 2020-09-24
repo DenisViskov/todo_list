@@ -65,6 +65,11 @@ public class IndexServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Method execute updates in DB by given name
+     *
+     * @param names
+     */
     private void updateTasks(String[] names) {
         List<Task> all = store.findAll();
         for (String name : names) {
@@ -80,6 +85,12 @@ public class IndexServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Method return ready json for send to client
+     *
+     * @return JSONObject
+     * @throws IOException
+     */
     private JSONObject getAllJSON() throws IOException {
         List<Task> tasks = store.findAll();
         JSONObject json = new JSONObject();
@@ -89,6 +100,12 @@ public class IndexServlet extends HttpServlet {
         return json;
     }
 
+    /**
+     * Method return ready json for send to client
+     *
+     * @return JSONObject
+     * @throws IOException
+     */
     private JSONObject getNotDoneJSON() throws IOException {
         List<Task> tasks = store.findAll();
         JSONObject json = new JSONObject();
