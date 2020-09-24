@@ -51,7 +51,7 @@
         for (key in data) {
             const name = data[key]
             let checkbox = document.createElement('div')
-            checkbox.innerHTML = name + '<input class="checkbox" type="checkbox" name=' + name + '/>'
+            checkbox.innerHTML = name + '<input class="checkbox" type="checkbox" name=' + name + '>'
             p.appendChild(checkbox)
         }
         let button = document.createElement('div')
