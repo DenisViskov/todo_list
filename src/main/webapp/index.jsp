@@ -99,7 +99,7 @@
             type: 'POST',
             url: '<%=request.getContextPath()%>/index',
             data: {
-                name: JSON.stringify(name),
+                name: name,
                 selected: true
             },
             dataType: 'json',
