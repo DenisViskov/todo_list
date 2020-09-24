@@ -24,6 +24,7 @@
         <input type="submit" class="btn btn-primary" value="Add new task" onclick="sendData()"/>
     </p>
 </form>
+<button type="submit" onclick="showAll()">Show All</button>
 <form id="tasks">
 </form>
 </body>
@@ -37,6 +38,19 @@
             data: {request: "GET request"},
             dataType: 'json',
             success: function (data) {
+                collectTasks(data)
+            }
+        });
+    }
+
+    function showAll() {
+        $.ajax({
+            type: 'GET',
+            url: '<%=request.getContextPath()%>/index',
+            data: {request: "GET All"},
+            dataType: 'json',
+            success: function (data) {
+                document.getElementById('tasks').innerHTML = ''
                 collectTasks(data)
             }
         });

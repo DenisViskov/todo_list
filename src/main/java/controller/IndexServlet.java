@@ -39,14 +39,16 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
-        List<Task> tasks = store.findAll();
-        JSONObject json = new JSONObject();
-        for (int i = 0; i < tasks.size(); i++) {
-            json.put(String.valueOf(i), tasks.get(i).getName());
+        if (req.getParameter("request").equals("GET request")) {
+            writer.print(getNotDoneJSON());
+            writer.flush();
+            writer.close();
         }
-        writer.print(json);
-        writer.flush();
-        writer.close();
+        if (req.getParameter("request").equals("GET All")) {
+            writer.print(getAllJSON());
+            writer.flush();
+            writer.close();
+        }
     }
 
     @Override
@@ -76,6 +78,26 @@ public class IndexServlet extends HttpServlet {
                 }
             });
         }
+    }
+
+    private JSONObject getAllJSON() throws IOException {
+        List<Task> tasks = store.findAll();
+        JSONObject json = new JSONObject();
+        for (int i = 0; i < tasks.size(); i++) {
+            json.put(String.valueOf(i), tasks.get(i).getName());
+        }
+        return json;
+    }
+
+    private JSONObject getNotDoneJSON() throws IOException {
+        List<Task> tasks = store.findAll();
+        JSONObject json = new JSONObject();
+        for (int i = 0; i < tasks.size(); i++) {
+            if (!tasks.get(i).isDone()) {
+                json.put(String.valueOf(i), tasks.get(i).getName());
+            }
+        }
+        return json;
     }
 
     @Override
