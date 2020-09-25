@@ -3,6 +3,8 @@ package controller;
 import model.Task;
 import org.json.JSONObject;
 import org.json.JSONStringer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import persistence.HbStore;
 import persistence.Store;
 
@@ -18,6 +20,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
+ * Class is an IndexServlet
+ *
  * @author Денис Висков
  * @version 1.0
  * @since 20.09.2020
@@ -30,9 +34,15 @@ public class IndexServlet extends HttpServlet {
      */
     private Store store;
 
+    /**
+     * Logger
+     */
+    private static Logger LOG;
+
     @Override
     public void init() throws ServletException {
         store = HbStore.instOf();
+        LOG = LoggerFactory.getLogger(IndexServlet.class);
     }
 
     @Override
@@ -122,6 +132,7 @@ public class IndexServlet extends HttpServlet {
         try {
             store.close();
         } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
             e.printStackTrace();
         }
     }
