@@ -32,7 +32,7 @@ public class IndexServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        store = new HbStore();
+        store = HbStore.instOf();
     }
 
     @Override

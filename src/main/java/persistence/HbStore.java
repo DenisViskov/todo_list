@@ -28,6 +28,27 @@ public class HbStore implements Store<Task> {
     private final SessionFactory sf = new MetadataSources(registry)
             .buildMetadata().buildSessionFactory();
 
+    private HbStore() {
+    }
+
+    /**
+     * Singleton initialization
+     */
+    private static final class Lazy {
+        /**
+         * Instance
+         */
+        private static final Store INST = new HbStore();
+    }
+
+    /**
+     * Method returns store instance
+     *
+     * @return store
+     */
+    public static Store instOf() {
+        return Lazy.INST;
+    }
 
     /**
      * Method add new task to DB
