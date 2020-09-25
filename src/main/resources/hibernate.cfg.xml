@@ -18,6 +18,6 @@
         <property name="format_sql">true</property>
         <property name="use_sql_comments">true</property>
 
-        <mapping class="tracker.ItemExample"/>
+        <mapping class="model.Task"/>
     </session-factory>
 </hibernate-configuration>
