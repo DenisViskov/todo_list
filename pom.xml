@@ -17,7 +17,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>14</maven.compiler.source>
     <maven.compiler.target>14</maven.compiler.target>
-    <jacoco.skip.instrument>true</jacoco.skip.instrument>
   </properties>
 
   <build>
@@ -26,17 +25,19 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.7.4.201502262128</version>
+        <version>0.8.5</version>
         <executions>
           <execution>
-            <id>jacoco-instrument</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
             <phase>test</phase>
             <goals>
-              <goal>instrument</goal>
+              <goal>report</goal>
             </goals>
-            <configuration>
-              <skip>${jacoco.skip.instrument}</skip>
-            </configuration>
           </execution>
         </executions>
       </plugin>
