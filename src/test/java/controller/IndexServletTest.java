@@ -1,12 +1,9 @@
 package controller;
 
 import model.Task;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import persistence.HbStore;
@@ -18,11 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
@@ -48,7 +43,7 @@ public class IndexServletTest {
     public void whenDoGetGETRequestTest() throws IOException, ServletException {
         when(resp.getWriter()).thenReturn(writer);
         when(req.getParameter("request")).thenReturn("GET request");
-        when(store.findAll()).thenReturn(Collections.emptyList());
+        when(store.getNotDone()).thenReturn(Collections.emptyList());
         servlet.doGet(req, resp);
         verify(writer).close();
     }
@@ -57,7 +52,7 @@ public class IndexServletTest {
     public void whenDoGetGETAllRequestTest() throws IOException, ServletException {
         when(resp.getWriter()).thenReturn(writer);
         when(req.getParameter("request")).thenReturn("GET All");
-        when(store.findAll()).thenReturn(Collections.emptyList());
+        when(store.getAll()).thenReturn(Collections.emptyList());
         servlet.doGet(req, resp);
         verify(writer).close();
     }
@@ -66,7 +61,7 @@ public class IndexServletTest {
     public void whenSelectedDoPostTest() throws ServletException, IOException {
         when(req.getParameter("selected")).thenReturn("Any");
         when(req.getParameterValues("name[]")).thenReturn(new String[]{"Any", "Many"});
-        when(store.findAll()).thenReturn(List.of(new Task(0, "Any", null, null, false),
+        when(store.getAll()).thenReturn(List.of(new Task(0, "Any", null, null, false),
                 new Task(0, "Many", null, null, false)));
         doNothing().when(store).update(any());
         servlet.doPost(req, resp);

@@ -2,7 +2,6 @@ package controller;
 
 import model.Task;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import persistence.HbStore;
@@ -50,12 +49,12 @@ public class IndexServlet extends HttpServlet {
         resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
         if (req.getParameter("request").equals("GET request")) {
-            writer.print(getNotDoneJSON());
+            writer.print(getJSON(store.getNotDone()));
             writer.flush();
             writer.close();
         }
         if (req.getParameter("request").equals("GET All")) {
-            writer.print(getAllJSON());
+            writer.print(getJSON(store.getAll()));
             writer.flush();
             writer.close();
         }
@@ -81,7 +80,7 @@ public class IndexServlet extends HttpServlet {
      * @param names
      */
     private void updateTasks(String[] names) {
-        List<Task> all = store.findAll();
+        List<Task> all = store.getAll();
         for (String name : names) {
             all.forEach(task -> {
                 if (task.getName().equals(name)) {
@@ -101,28 +100,10 @@ public class IndexServlet extends HttpServlet {
      * @return JSONObject
      * @throws IOException
      */
-    private JSONObject getAllJSON() throws IOException {
-        List<Task> tasks = store.findAll();
+    private JSONObject getJSON(List<Task> tasks) throws IOException {
         JSONObject json = new JSONObject();
         for (int i = 0; i < tasks.size(); i++) {
             json.put(String.valueOf(i), tasks.get(i).getName());
-        }
-        return json;
-    }
-
-    /**
-     * Method return ready json for send to client
-     *
-     * @return JSONObject
-     * @throws IOException
-     */
-    private JSONObject getNotDoneJSON() throws IOException {
-        List<Task> tasks = store.findAll();
-        JSONObject json = new JSONObject();
-        for (int i = 0; i < tasks.size(); i++) {
-            if (!tasks.get(i).isDone()) {
-                json.put(String.valueOf(i), tasks.get(i).getName());
-            }
         }
         return json;
     }

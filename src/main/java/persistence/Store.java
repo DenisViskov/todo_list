@@ -1,7 +1,10 @@
 package persistence;
 
 
+import org.hibernate.Session;
+
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Interface store
@@ -20,11 +23,18 @@ public interface Store<V> extends AutoCloseable {
     V add(V task);
 
     /**
-     * Method should return all element from DB
+     * Method should return not done tasks from DB
      *
      * @return list
      */
-    List<V> findAll();
+    List<V> getNotDone();
+
+    /**
+     * Method should return all elements from DB
+     *
+     * @return list
+     */
+    List<V> getAll();
 
     /**
      * Method should update task in DB
