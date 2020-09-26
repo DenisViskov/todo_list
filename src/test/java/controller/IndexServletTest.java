@@ -4,7 +4,9 @@ import model.Task;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import persistence.HbStore;
 import persistence.Store;
@@ -23,7 +25,8 @@ import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(HbStore.class)
+@PrepareOnlyThisForTest(HbStore.class)
+@PowerMockIgnore("org.jacoco.agent.rt.*")
 public class IndexServletTest {
 
     private static final Store store = mock(Store.class);
