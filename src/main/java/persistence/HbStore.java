@@ -8,6 +8,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Class is an HbStore
@@ -67,15 +68,40 @@ public class HbStore implements Store<Task> {
     }
 
     /**
+     * Method returns not done tasks from DB
+     *
+     * @return list
+     */
+    @Override
+    public List<Task> getNotDone() {
+        return find(
+                session -> session.createQuery("from model.Task where done=false").list()
+        );
+    }
+
+    /**
      * Method returns all tasks from DB
      *
      * @return list
      */
     @Override
-    public List<Task> findAll() {
+    public List<Task> getAll() {
+        return find(
+                session -> session.createQuery("from model.Task").list()
+        );
+    }
+
+    /**
+     * Method is a filter for tasks
+     *
+     * @param command
+     * @param <T>
+     * @return T
+     */
+    private <T> T find(Function<Session, T> command) {
         Session session = sf.openSession();
         session.beginTransaction();
-        List result = session.createQuery("from model.Task").list();
+        T result = command.apply(session);
         session.getTransaction().commit();
         session.close();
         return result;
