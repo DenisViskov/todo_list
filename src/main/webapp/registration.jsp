@@ -14,7 +14,7 @@
             integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
             crossorigin="anonymous"></script>
 </head>
-<body>
+<body id="body">
 <h2>Welcome to TODO App</h2>
 <form>
     <h3>Please fill the form fields:</h3>
@@ -59,8 +59,27 @@
                     confirm: confirm
                 },
                 dataType: 'json',
-                success: console.log('done')
+            }).done(function (data) {
+                getAnswer(data)
+            }).fail(function (err) {
+                alert(err);
             });
+        }
+    }
+
+    function getAnswer(data) {
+        const answer = data[0]
+        if (answer == 'was added') {
+            let body = document.getElementById('body')
+            let message = document.createElement('div')
+            message.innerText = 'Fine! You was been registered'
+            body.appendChild(message)
+        }
+        if(answer == 'exist'){
+            let body = document.getElementById('body')
+            let message = document.createElement('div')
+            message.innerText = 'User with the same login already exist!'
+            body.appendChild(message)
         }
     }
 </script>

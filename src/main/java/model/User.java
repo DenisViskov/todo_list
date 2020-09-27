@@ -24,17 +24,22 @@ public class User {
      */
     private String login;
     /**
+     * Password
+     */
+    private String password;
+    /**
      * Task
      */
     @ManyToOne
-    @JoinColumn(name = "task_id")
+    @JoinColumn(name = "task_id", nullable = true)
     private Task task;
 
     public User() {
     }
 
-    public User(String login, Task task) {
+    public User(String login, String password, Task task) {
         this.login = login;
+        this.password = password;
         this.task = task;
     }
 
@@ -54,6 +59,14 @@ public class User {
         this.login = login;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public Task getTask() {
         return task;
     }
@@ -69,11 +82,12 @@ public class User {
         User user = (User) o;
         return id == user.id &&
                 Objects.equals(login, user.login) &&
+                Objects.equals(password, user.password) &&
                 Objects.equals(task, user.task);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, task);
+        return Objects.hash(id, login, password, task);
     }
 }
