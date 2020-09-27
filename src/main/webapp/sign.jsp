@@ -24,6 +24,6 @@
     </div>
 </form>
 <h2>If you not registered yet, please follow on registration page:</h2>
-<a href="http://localhost:8080/todo_list/registration">Registration now</a>
+<a href="http://localhost:8080/todo_list/registration.jsp">Registration now</a>
 </body>
 </html>

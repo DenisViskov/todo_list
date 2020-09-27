@@ -36,12 +36,11 @@ public class IndexServlet extends HttpServlet {
     /**
      * Logger
      */
-    private static Logger LOG;
+    private static final Logger LOG = LoggerFactory.getLogger(IndexServlet.class);
 
     @Override
     public void init() throws ServletException {
         store = HbStore.instOf();
-        LOG = LoggerFactory.getLogger(IndexServlet.class);
     }
 
     @Override
@@ -51,12 +50,10 @@ public class IndexServlet extends HttpServlet {
         if (req.getParameter("request").equals("GET request")) {
             writer.print(getJSON(store.getNotDone()));
             writer.flush();
-            writer.close();
         }
         if (req.getParameter("request").equals("GET All")) {
             writer.print(getJSON(store.getAll()));
             writer.flush();
-            writer.close();
         }
     }
 
