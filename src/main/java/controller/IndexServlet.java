@@ -1,11 +1,13 @@
 package controller;
 
 import model.Task;
+import model.User;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import persistence.HbStore;
 import persistence.Store;
+import persistence.UserStorage;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -68,7 +70,11 @@ public class IndexServlet extends HttpServlet {
             String name = req.getParameter("name");
             String description = req.getParameter("description");
             Task task = new Task(0, name, description, Timestamp.valueOf(LocalDateTime.now()), false);
-            store.add(task);
+            task = (Task) store.add(task);
+            User user = (User) req.getSession().getAttribute("user");
+            user.setTask(task);
+            UserStorage userStore = (UserStorage) getServletContext().getAttribute("Hiber");
+            userStore.updateUser(user);
         }
     }
 
