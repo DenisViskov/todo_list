@@ -41,6 +41,7 @@ public class IndexServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         store = HbStore.instOf();
+        getServletContext().setAttribute("Hiber", store);
     }
 
     @Override
