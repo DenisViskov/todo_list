@@ -73,7 +73,7 @@ public class IndexServlet extends HttpServlet {
             task = (Task) store.add(task);
             User user = (User) req.getSession().getAttribute("user");
             user.setTask(task);
-            UserStorage userStore = (UserStorage) getServletContext().getAttribute("Hiber");
+            UserStorage userStore = (UserStorage) store;
             userStore.updateUser(user);
         }
     }
