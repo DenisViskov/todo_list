@@ -11,7 +11,7 @@ import java.util.Objects;
  * @since 27.09.2020
  */
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     /**
      * ID
@@ -31,13 +31,14 @@ public class User {
      * Task
      */
     @ManyToOne
-    @JoinColumn(name = "task_id", nullable = true)
+    @JoinColumn(name = "task_id")
     private Task task;
 
     public User() {
     }
 
-    public User(String login, String password, Task task) {
+    public User(int id, String login, String password, Task task) {
+        this.id = id;
         this.login = login;
         this.password = password;
         this.task = task;

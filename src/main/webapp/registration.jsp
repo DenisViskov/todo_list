@@ -16,7 +16,7 @@
 </head>
 <body id="body">
 <h2>Welcome to TODO App</h2>
-<form>
+<form method="post">
     <h3>Please fill the form fields:</h3>
     <div>Login:<br>
         <input type="text" id="login" required name="login"/>

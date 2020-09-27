@@ -26,13 +26,13 @@ public class RegServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
-        PrintWriter writer = resp.getWriter();
+        PrintWriter writer = new PrintWriter(resp.getOutputStream());
         JSONObject json = new JSONObject();
         String login = req.getParameter("login");
         String pass = req.getParameter("password");
         if (!checkUser(login)) {
             UserStorage storage = (UserStorage) getServletContext().getAttribute("Hiber");
-            storage.addUser(new User(login, pass, null));
+            storage.addUser(new User(0, login, pass, null));
             json.put("user", "was added");
             writer.print(json);
             writer.flush();
@@ -50,10 +50,6 @@ public class RegServlet extends HttpServlet {
      */
     private boolean checkUser(String login) {
         UserStorage store = (UserStorage) getServletContext().getAttribute("Hiber");
-        User us = new User();
-        us.setLogin(login);
-        us.setPassword("pass");
-        store.addUser(us);
         List<User> list = store.getAllUser();
         return list.stream()
                 .anyMatch(user -> user.getLogin().equals(login));
