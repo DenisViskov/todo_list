@@ -25,7 +25,7 @@ public class FilterSession implements Filter {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         HttpSession session = req.getSession();
         if (session.getAttribute("user") == null) {
-            resp.sendRedirect(req.getContextPath() + "/sign.jsp");
+            resp.sendRedirect(req.getContextPath() + "/sign");
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
