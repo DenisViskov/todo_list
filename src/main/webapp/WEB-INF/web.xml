@@ -4,13 +4,4 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-
-  <filter>
-      <filter-name>FilterSession</filter-name>
-      <filter-class>controller.FilterSession</filter-class>
-  </filter>
-  <filter-mapping>
-      <filter-name>FilterSession</filter-name>
-      <url-pattern>/index.jsp</url-pattern>
-  </filter-mapping>
 </web-app>

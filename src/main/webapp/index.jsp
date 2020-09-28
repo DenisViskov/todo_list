@@ -12,7 +12,8 @@
 
 
 <body>
-<form>
+<a href="sign.jsp">Sign in</a>
+<form method="post">
     <p>
         <label for="name">Task name:</label><br/>
         <input type="text" name="task" value="enter name" id="name"/><br>

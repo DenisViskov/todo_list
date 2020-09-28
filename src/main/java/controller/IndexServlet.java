@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
@@ -71,13 +72,24 @@ public class IndexServlet extends HttpServlet {
         } else {
             String name = req.getParameter("name");
             String description = req.getParameter("description");
-            Task task = new Task(0, name, description, Timestamp.valueOf(LocalDateTime.now()), false);
-            task = (Task) store.add(task);
-            User user = (User) req.getSession().getAttribute("user");
+            if (!saveUserWithTask(name, description, req.getSession())) {
+                resp.sendRedirect(req.getContextPath() + "/sign.jsp");
+            }
+        }
+    }
+
+    private boolean saveUserWithTask(String name, String description, HttpSession session) {
+        boolean result = false;
+        Task task = new Task(0, name, description, Timestamp.valueOf(LocalDateTime.now()), false);
+        task = (Task) store.add(task);
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
             user.setTask(task);
             UserStorage userStore = (UserStorage) store;
             userStore.updateUser(user);
+            result = true;
         }
+        return result;
     }
 
     /**
