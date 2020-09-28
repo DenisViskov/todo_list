@@ -105,10 +105,14 @@ public class IndexServlet extends HttpServlet {
      * @throws IOException
      */
     private JSONObject getJSON(List<Task> tasks) throws IOException {
+        UserStorage userStorage = (UserStorage) store;
+        List<User> users = userStorage.getAllUser();
         JSONObject json = new JSONObject();
-        for (int i = 0; i < tasks.size(); i++) {
-            json.put(String.valueOf(i), tasks.get(i).getName());
-        }
+        tasks.forEach(task -> users.forEach(user -> {
+            if (user.getTask().getId() == task.getId()) {
+                json.put(user.getLogin(), task.getName());
+            }
+        }));
         return json;
     }
 
