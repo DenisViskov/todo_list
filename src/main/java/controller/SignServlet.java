@@ -38,14 +38,9 @@ public class SignServlet extends HttpServlet {
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
         }
         PrintWriter writer = resp.getWriter();
-        writer.print("<h2>Login or password not same</h2>");
+        writer.print("<h2>Login or password not same</h2><br>" +
+                "<a href=\"http://localhost:8080/todo_list/sign.jsp\">Try again</a>");
         writer.flush();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        doGet(req, resp);
     }
 
     private User findUser(String login) {
