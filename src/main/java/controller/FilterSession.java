@@ -26,6 +26,7 @@ public class FilterSession implements Filter {
         HttpSession session = req.getSession();
         if (session.getAttribute("user") == null) {
             resp.sendRedirect(req.getContextPath() + "/sign");
+            return;
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
