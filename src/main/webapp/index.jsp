@@ -25,7 +25,7 @@
     </p>
 </form>
 <button type="submit" onclick="showAll()">Show All</button>
-<form id="tasks">
+<form id="tasks" method="post">
 </form>
 </body>
 </html>

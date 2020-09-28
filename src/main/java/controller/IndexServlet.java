@@ -66,6 +66,8 @@ public class IndexServlet extends HttpServlet {
         if (req.getParameter("selected") != null) {
             String[] parameterValues = req.getParameterValues("name[]");
             updateTasks(parameterValues);
+            req.setAttribute("request", "GET request");
+            doGet(req, resp);
         } else {
             String name = req.getParameter("name");
             String description = req.getParameter("description");
