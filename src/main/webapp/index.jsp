@@ -37,7 +37,7 @@
             type: 'GET',
             url: '<%=request.getContextPath()%>/index',
             data: {request: "GET request"},
-            dataType: 'json',
+            contentType: "application/json",
             success: function (data) {
                 collectTasks(data)
             }
@@ -49,7 +49,7 @@
             type: 'GET',
             url: '<%=request.getContextPath()%>/index',
             data: {request: "GET All"},
-            dataType: 'json',
+            contentType: "application/json",
             success: function (data) {
                 document.getElementById('tasks').innerHTML = ''
                 collectTasks(data)
@@ -96,7 +96,7 @@
                     name: name,
                     description: description
                 },
-                dataType: 'json',
+                contentType: "application/json",
                 success: console.log('done')
             });
         }
@@ -117,7 +117,7 @@
                 name: name,
                 selected: true
             },
-            dataType: 'json',
+            contentType: "application/json",
             success: console.log('done')
         });
     }

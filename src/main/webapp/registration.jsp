@@ -58,7 +58,7 @@
                     password: password,
                     confirm: confirm
                 },
-                dataType: 'json',
+                contentType: "application/json",
             }).done(function (data) {
                 getAnswer(data)
             }).fail(function (err) {
