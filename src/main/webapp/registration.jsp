@@ -68,7 +68,7 @@
     }
 
     function getAnswer(data) {
-        const answer = data[0]
+        const answer = data['user']
         if (answer == 'was added') {
             let body = document.getElementById('body')
             let message = document.createElement('div')
