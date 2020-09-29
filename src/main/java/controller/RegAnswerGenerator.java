@@ -9,22 +9,14 @@ import java.util.List;
  * @version 1.0
  * @since 29.09.2020
  */
-public class AnswerGenerator implements Answer<JSONObject> {
+public class RegAnswerGenerator implements Answer<JSONObject> {
     /**
      * Operation
      */
     private volatile boolean lastOperation = false;
 
     @Override
-    public synchronized JSONObject toFormAnswer(String request) {
-        JSONObject result = new JSONObject();
-        if (request.equals("Registration Answer")) {
-            result = regAnswer();
-        }
-        return result;
-    }
-
-    private synchronized JSONObject regAnswer() {
+    public synchronized JSONObject toFormAnswer() {
         JSONObject json = new JSONObject();
         if (lastOperation) {
             json.put("user", "was added");
@@ -32,6 +24,7 @@ public class AnswerGenerator implements Answer<JSONObject> {
         if (!lastOperation) {
             json.put("user", "exist");
         }
+        lastOperation = false;
         return json;
     }
 

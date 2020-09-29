@@ -16,7 +16,7 @@
 </head>
 <body id="body">
 <h2>Welcome to TODO App</h2>
-<form>
+<form id="form">
     <h3>Please fill the form fields:</h3>
     <div>Login:<br>
         <input type="text" id="login" required name="login"/>
@@ -28,13 +28,19 @@
         <input type="password" id="confirm_password" required name="confirm_password"/>
     </div>
     <div>
-        <input type="submit" onclick="sendData(),getAnswer()" value="Sign up"/>
+        <input type="submit" value="Sign up"/>
     </div>
 </form>
 </body>
 </html>
 
 <script>
+    $('#form').submit(function (e){
+        e.preventDefault()
+        sendData();
+        getAnswer()
+    })
+
     function validation() {
         const password = document.getElementById("password").value
         const confirm = document.getElementById("confirm_password").value
@@ -59,12 +65,12 @@
                     confirm: confirm
                 },
                 dataType: "json",
+                success: console.log('done')
             })
         }
     }
 
     function getAnswer() {
-        var answer
         $.ajax({
             type: 'GET',
             url: '<%=request.getContextPath()%>/registration',
@@ -73,12 +79,8 @@
             },
             dataType: "json",
             success: function (data) {
-                answer = data
-                putAnswer(answer)
+                putAnswer(data)
             },
-            error: function (err) {
-                console.log(err)
-            }
         })
     }
 

@@ -2,7 +2,6 @@ package controller;
 
 import model.User;
 import org.json.JSONObject;
-import persistence.Store;
 import persistence.UserStorage;
 
 import javax.servlet.ServletException;
@@ -22,7 +21,13 @@ import java.util.List;
 @WebServlet("/registration")
 public class RegServlet extends HttpServlet {
 
-    private final Answer answer = new AnswerGenerator();
+    private final Answer answer = new RegAnswerGenerator();
+    private UserStorage store;
+
+    @Override
+    public void init() throws ServletException {
+        store = (UserStorage) getServletContext().getAttribute("Hiber");
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,8 +39,7 @@ public class RegServlet extends HttpServlet {
             req.getRequestDispatcher("/registration.jsp").forward(req, resp);
             return;
         }
-        Answer answer = new AnswerGenerator();
-        JSONObject json = (JSONObject) answer.toFormAnswer(request);
+        JSONObject json = (JSONObject) answer.toFormAnswer();
         writer.print(json.toString());
         writer.flush();
     }

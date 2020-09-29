@@ -8,7 +8,7 @@ package controller;
  * @since 29.09.2020
  */
 public interface Answer<V> {
-    V toFormAnswer(String request);
+    V toFormAnswer();
     void setLastOperation(boolean lastOperation);
     boolean isLastOperation();
 }
