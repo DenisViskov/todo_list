@@ -41,6 +41,7 @@ public class IndexServlet extends HttpServlet {
      */
     private static final Logger LOG = LoggerFactory.getLogger(IndexServlet.class);
 
+
     @Override
     public void init() throws ServletException {
         store = HbStore.instOf();
@@ -51,14 +52,9 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
-        if (req.getParameter("request").equals("GET request")) {
-            writer.print(getJSON(store.getNotDone()));
-            writer.flush();
-        }
-        if (req.getParameter("request").equals("GET All")) {
-            writer.print(getJSON(store.getAll()));
-            writer.flush();
-        }
+        Answer answer = new IndexAnswerGenerator(store, req.getParameter("request"));
+        writer.print(answer.toFormAnswer());
+        writer.flush();
     }
 
     @Override
@@ -67,29 +63,22 @@ public class IndexServlet extends HttpServlet {
         if (req.getParameter("selected") != null) {
             String[] parameterValues = req.getParameterValues("name[]");
             updateTasks(parameterValues);
-            req.setAttribute("request", "GET request");
+            req.setAttribute("request", "on load page");
             doGet(req, resp);
         } else {
             String name = req.getParameter("name");
             String description = req.getParameter("description");
-            if (!saveUserWithTask(name, description, req.getSession())) {
-                resp.sendRedirect(req.getContextPath() + "/sign.jsp");
-            }
+            saveUserWithTask(name, description, req.getSession());
         }
     }
 
-    private boolean saveUserWithTask(String name, String description, HttpSession session) {
-        boolean result = false;
+    private void saveUserWithTask(String name, String description, HttpSession session) {
         Task task = new Task(0, name, description, Timestamp.valueOf(LocalDateTime.now()), false);
         task = (Task) store.add(task);
         User user = (User) session.getAttribute("user");
-        if (user != null) {
-            user.setTask(task);
-            UserStorage userStore = (UserStorage) store;
-            userStore.updateUser(user);
-            result = true;
-        }
-        return result;
+        user.setTask(task);
+        UserStorage userStore = (UserStorage) store;
+        userStore.updateUser(user);
     }
 
     /**
@@ -110,24 +99,6 @@ public class IndexServlet extends HttpServlet {
                 }
             });
         }
-    }
-
-    /**
-     * Method return ready json for send to client
-     *
-     * @return JSONObject
-     * @throws IOException
-     */
-    private JSONObject getJSON(List<Task> tasks) throws IOException {
-        UserStorage userStorage = (UserStorage) store;
-        List<User> users = userStorage.getAllUser();
-        JSONObject json = new JSONObject();
-        tasks.forEach(task -> users.forEach(user -> {
-            if (user.getTask().getId() == task.getId()) {
-                json.put(user.getLogin(), task.getName());
-            }
-        }));
-        return json;
     }
 
     @Override

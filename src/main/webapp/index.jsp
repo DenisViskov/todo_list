@@ -36,7 +36,7 @@
         $.ajax({
             type: 'GET',
             url: '<%=request.getContextPath()%>/index',
-            data: {request: "GET request"},
+            data: {request: "on load page"},
             contentType: "application/json",
             success: function (data) {
                 collectTasks(data)
@@ -48,7 +48,7 @@
         $.ajax({
             type: 'GET',
             url: '<%=request.getContextPath()%>/index',
-            data: {request: "GET All"},
+            data: {request: "get all tasks"},
             contentType: "application/json",
             success: function (data) {
                 document.getElementById('tasks').innerHTML = ''
