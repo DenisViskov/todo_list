@@ -22,24 +22,34 @@ import java.util.List;
 @WebServlet("/registration")
 public class RegServlet extends HttpServlet {
 
+    private final Answer answer = new AnswerGenerator();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json");
+        PrintWriter writer = resp.getWriter();
+        String request = req.getParameter("registration");
+        if (request == null) {
+            req.getRequestDispatcher("/registration.jsp").forward(req, resp);
+            return;
+        }
+        Answer answer = new AnswerGenerator();
+        JSONObject json = (JSONObject) answer.toFormAnswer(request);
+        writer.print(json.toString());
+        writer.flush();
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json");
-        PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        JSONObject json = new JSONObject();
         String login = req.getParameter("login");
         String pass = req.getParameter("password");
         if (!checkUser(login)) {
             UserStorage storage = (UserStorage) getServletContext().getAttribute("Hiber");
             storage.addUser(new User(0, login, pass, null));
-            json.put("user", "was added");
-            writer.print(json);
-            writer.flush();
+            answer.setLastOperation(true);
         }
-        json.put("user", "exist");
-        writer.print(json);
-        writer.flush();
     }
 
     /**

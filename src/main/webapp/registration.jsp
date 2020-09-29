@@ -28,7 +28,7 @@
         <input type="password" id="confirm_password" required name="confirm_password"/>
     </div>
     <div>
-        <input type="submit" onclick="sendData()" value="Sign up"/>
+        <input type="submit" onclick="sendData(),getAnswer()" value="Sign up"/>
     </div>
 </form>
 </body>
@@ -58,16 +58,33 @@
                     password: password,
                     confirm: confirm
                 },
-                contentType: "application/json",
-            }).done(function (data) {
-                getAnswer(data)
-            }).fail(function (err) {
-                alert(err);
-            });
+                dataType: "json",
+            })
+            const data = getAnswer()
+            putAnswer(data)
         }
     }
 
-    function getAnswer(data) {
+    function getAnswer() {
+        var answer
+        $.ajax({
+            type: 'GET',
+            url: '<%=request.getContextPath()%>/registration',
+            data: {
+                registration: "Registration Answer"
+            },
+            dataType: "json",
+            success: function (data) {
+                answer = JSON.stringify(data)
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+        return answer
+    }
+
+    function putAnswer(data) {
         const answer = data['user']
         if (answer == 'was added') {
             let body = document.getElementById('body')
@@ -75,7 +92,7 @@
             message.innerText = 'Fine! You was been registered'
             body.appendChild(message)
         }
-        if(answer == 'exist'){
+        if (answer == 'exist') {
             let body = document.getElementById('body')
             let message = document.createElement('div')
             message.innerText = 'User with the same login already exist!'
