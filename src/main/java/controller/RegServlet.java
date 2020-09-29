@@ -34,13 +34,7 @@ public class RegServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
-        String request = req.getParameter("registration");
-        if (request == null) {
-            req.getRequestDispatcher("/registration.jsp").forward(req, resp);
-            return;
-        }
-        JSONObject json = (JSONObject) answer.toFormAnswer();
-        writer.print(json.toString());
+        writer.print(answer.toFormAnswer());
         writer.flush();
     }
 
@@ -50,8 +44,7 @@ public class RegServlet extends HttpServlet {
         String login = req.getParameter("login");
         String pass = req.getParameter("password");
         if (!checkUser(login)) {
-            UserStorage storage = (UserStorage) getServletContext().getAttribute("Hiber");
-            storage.addUser(new User(0, login, pass, null));
+            store.addUser(new User(0, login, pass, null));
             answer.setLastOperation(true);
         } else {
             answer.setLastOperation(false);
@@ -65,7 +58,6 @@ public class RegServlet extends HttpServlet {
      * @return boolean
      */
     private boolean checkUser(String login) {
-        UserStorage store = (UserStorage) getServletContext().getAttribute("Hiber");
         List<User> list = store.getAllUser();
         return list.stream()
                 .anyMatch(user -> user.getLogin().equals(login));

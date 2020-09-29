@@ -35,10 +35,10 @@
 </html>
 
 <script>
-    $('#form').submit(function (e){
+    $('#form').submit(function (e) {
         e.preventDefault()
         sendData();
-        getAnswer()
+        setTimeout(getAnswer, 500)
     })
 
     function validation() {
@@ -86,15 +86,13 @@
 
     function putAnswer(data) {
         const answer = data['user']
+        let body = document.getElementById('body')
+        let message = document.createElement('div')
         if (answer == 'was added') {
-            let body = document.getElementById('body')
-            let message = document.createElement('div')
             message.innerText = 'Fine! You was been registered'
             body.appendChild(message)
         }
         if (answer == 'exist') {
-            let body = document.getElementById('body')
-            let message = document.createElement('div')
             message.innerText = 'User with the same login already exist!'
             body.appendChild(message)
         }
