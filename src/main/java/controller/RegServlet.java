@@ -53,6 +53,8 @@ public class RegServlet extends HttpServlet {
             UserStorage storage = (UserStorage) getServletContext().getAttribute("Hiber");
             storage.addUser(new User(0, login, pass, null));
             answer.setLastOperation(true);
+        } else {
+            answer.setLastOperation(false);
         }
     }
 

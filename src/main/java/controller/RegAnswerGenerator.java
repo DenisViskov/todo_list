@@ -13,7 +13,7 @@ public class RegAnswerGenerator implements Answer<JSONObject> {
     /**
      * Operation
      */
-    private volatile boolean lastOperation = false;
+    private volatile boolean lastOperation;
 
     @Override
     public synchronized JSONObject toFormAnswer() {

@@ -21,31 +21,39 @@ import java.util.List;
 @WebServlet("/sign")
 public class SignServlet extends HttpServlet {
 
+    private final Answer answer = new SignAnswerGenerator();
+    private UserStorage storage;
+
+    @Override
+    public void init() throws ServletException {
+        storage = (UserStorage) getServletContext().getAttribute("Hiber");
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/sign.jsp").forward(req, resp);
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json");
+        PrintWriter writer = resp.getWriter();
+        writer.print(answer.toFormAnswer());
+        writer.flush();
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        resp.setContentType("text/html");
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         if (check(login, password)) {
             HttpSession session = req.getSession();
             session.setAttribute("user", findUser(login));
-            req.getRequestDispatcher("/index.jsp").forward(req, resp);
+            answer.setLastOperation(true);
+        } else {
+            answer.setLastOperation(false);
         }
-        PrintWriter writer = resp.getWriter();
-        writer.print("<h2>Login or password not same</h2><br>" +
-                "<a href=\"http://localhost:8080/todo_list/sign.jsp\">Try again</a>");
-        writer.flush();
     }
 
     private User findUser(String login) {
-        UserStorage store = (UserStorage) getServletContext().getAttribute("Hiber");
-        List<User> users = store.getAllUser();
+        List<User> users = storage.getAllUser();
         return users.stream()
                 .filter(user -> user.getLogin().equals(login))
                 .findFirst()
@@ -53,8 +61,7 @@ public class SignServlet extends HttpServlet {
     }
 
     private boolean check(String login, String password) {
-        UserStorage store = (UserStorage) getServletContext().getAttribute("Hiber");
-        List<User> users = store.getAllUser();
+        List<User> users = storage.getAllUser();
         return users.stream()
                 .anyMatch(user -> user.getLogin().equals(login)
                         && user.getPassword().equals(password));
