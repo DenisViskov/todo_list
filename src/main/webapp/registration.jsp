@@ -16,7 +16,7 @@
 </head>
 <body id="body">
 <h2>Welcome to TODO App</h2>
-<form method="post">
+<form>
     <h3>Please fill the form fields:</h3>
     <div>Login:<br>
         <input type="text" id="login" required name="login"/>
@@ -60,8 +60,6 @@
                 },
                 dataType: "json",
             })
-            const data = getAnswer()
-            putAnswer(data)
         }
     }
 
@@ -75,13 +73,13 @@
             },
             dataType: "json",
             success: function (data) {
-                answer = JSON.stringify(data)
+                answer = data
+                putAnswer(answer)
             },
             error: function (err) {
                 console.log(err)
             }
         })
-        return answer
     }
 
     function putAnswer(data) {
