@@ -44,13 +44,6 @@
         showAll()
     })
 
-    $('#updateButton').submit(function (e) {
-        e.preventDefault()
-        sendUpdate()
-        document.getElementById('tasks').innerHTML = ''
-        onLoad()
-    })
-
     window.onload = function () {
         onLoad()
     }
@@ -94,6 +87,12 @@
         }
         let button = document.createElement('div')
         button.innerHTML = '<button type="submit" id="updateButton">Update</button>'
+        button.addEventListener('click', function (e) {
+            e.preventDefault()
+            sendUpdate()
+            document.getElementById('tasks').innerHTML = ''
+            setTimeout(onLoad(), 500)
+        })
         p.appendChild(button)
         form.appendChild(p)
     }
@@ -138,9 +137,9 @@
             url: '<%=request.getContextPath()%>/index',
             data: {
                 name: name,
-                selected: true
+                selected: 'true'
             },
-            contentType: "application/json",
+            dataType: 'json',
             success: console.log('done')
         });
     }
