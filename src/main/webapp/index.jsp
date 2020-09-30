@@ -13,7 +13,7 @@
 
 <body>
 <a href="sign.jsp">Sign in</a>
-<form method="post">
+<form id="addTask">
     <p>
         <label for="name">Task name:</label><br/>
         <input type="text" name="task" value="enter name" id="name"/><br>
@@ -22,17 +22,40 @@
                   cols="30" rows="7"></textarea>
     </p>
     <p>
-        <input type="submit" class="btn btn-primary" value="Add new task" onclick="sendData()"/>
+        <input type="submit" class="btn btn-primary" value="Add new task"/>
     </p>
 </form>
-<button type="submit" onclick="showAll()">Show All</button>
-<form id="tasks" method="post">
+<button type="submit" id="showAllButton">Show All</button>
+<form id="tasks">
 </form>
 </body>
 </html>
 
 <script>
+    $('#addTask').submit(function (e) {
+        e.preventDefault()
+        sendData()
+        document.getElementById('tasks').innerHTML = ''
+        onLoad()
+    })
+
+    $('#showAllButton').submit(function (e) {
+        e.preventDefault()
+        showAll()
+    })
+
+    $('#updateButton').submit(function (e) {
+        e.preventDefault()
+        sendUpdate()
+        document.getElementById('tasks').innerHTML = ''
+        onLoad()
+    })
+
     window.onload = function () {
+        onLoad()
+    }
+
+    function onLoad() {
         $.ajax({
             type: 'GET',
             url: '<%=request.getContextPath()%>/index',
@@ -70,7 +93,7 @@
             p.appendChild(checkbox)
         }
         let button = document.createElement('div')
-        button.innerHTML = '<button type="submit" onclick="sendUpdate()">Update</button>'
+        button.innerHTML = '<button type="submit" id="updateButton">Update</button>'
         p.appendChild(button)
         form.appendChild(p)
     }
