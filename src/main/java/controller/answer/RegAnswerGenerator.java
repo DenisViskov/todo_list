@@ -1,4 +1,4 @@
-package controller;
+package controller.answer;
 
 import org.json.JSONObject;
 
@@ -7,8 +7,7 @@ import org.json.JSONObject;
  * @version 1.0
  * @since 29.09.2020
  */
-public class SignAnswerGenerator implements Answer<JSONObject> {
-
+public class RegAnswerGenerator implements Answer<JSONObject> {
     /**
      * Operation
      */
@@ -18,10 +17,10 @@ public class SignAnswerGenerator implements Answer<JSONObject> {
     public synchronized JSONObject toFormAnswer() {
         JSONObject json = new JSONObject();
         if (lastOperation) {
-            json.put("answer", true);
+            json.put("user", "was added");
         }
         if (!lastOperation) {
-            json.put("answer", false);
+            json.put("user", "exist");
         }
         lastOperation = false;
         return json;

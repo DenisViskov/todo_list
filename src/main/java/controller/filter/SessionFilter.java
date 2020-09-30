@@ -1,4 +1,4 @@
-package controller;
+package controller.filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -33,6 +33,7 @@ public class SessionFilter implements Filter {
         }
         if (req.getSession().getAttribute("user") == null) {
             resp.sendRedirect(req.getContextPath() + "/sign.jsp");
+            return;
         }
         filterChain.doFilter(req, resp);
     }
