@@ -36,7 +36,7 @@
         e.preventDefault()
         sendData()
         document.getElementById('tasks').innerHTML = ''
-        onLoad()
+        setTimeout(onLoad, 500)
     })
 
     $('#showAllButton').click(function (e) {
@@ -91,7 +91,7 @@
             e.preventDefault()
             sendUpdate()
             document.getElementById('tasks').innerHTML = ''
-            setTimeout(onLoad(), 500)
+            setTimeout(onLoad(), 1000)
         })
         p.appendChild(button)
         form.appendChild(p)
@@ -118,7 +118,7 @@
                     name: name,
                     description: description
                 },
-                contentType: "application/json",
+                dataType: "json",
                 success: console.log('done')
             });
         }
