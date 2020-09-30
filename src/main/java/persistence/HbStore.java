@@ -1,6 +1,7 @@
 package persistence;
 
 import model.Task;
+import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -17,7 +18,7 @@ import java.util.function.Function;
  * @version 1.0
  * @since 20.09.2020
  */
-public class HbStore implements Store<Task> {
+public class HbStore implements Store<Task>, UserStorage<User> {
     /**
      * Registry
      */
@@ -119,6 +120,48 @@ public class HbStore implements Store<Task> {
         session.update(task);
         session.getTransaction().commit();
         session.close();
+    }
+
+    /**
+     * Method add new user in DB
+     *
+     * @param user
+     * @return User
+     */
+    @Override
+    public User addUser(User user) {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        session.save(user);
+        session.getTransaction().commit();
+        session.close();
+        return user;
+    }
+
+    /**
+     * Method of update user in DB
+     *
+     * @param user
+     */
+    @Override
+    public void updateUser(User user) {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        session.update(user);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    /**
+     * Method returns all users from DB
+     *
+     * @return list
+     */
+    @Override
+    public List<User> getAllUser() {
+        return find(
+                session -> session.createQuery("from model.User").list()
+        );
     }
 
     /**

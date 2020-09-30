@@ -1,17 +1,21 @@
-package controller;
+package controller.servlet;
 
+import controller.answer.Answer;
+import controller.answer.IndexAnswerGenerator;
 import model.Task;
-import org.json.JSONObject;
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import persistence.HbStore;
 import persistence.Store;
+import persistence.UserStorage;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
@@ -32,32 +36,25 @@ public class IndexServlet extends HttpServlet {
      * Storage
      */
     private Store store;
-
     /**
      * Logger
      */
-    private static Logger LOG;
+    private static final Logger LOG = LoggerFactory.getLogger(IndexServlet.class);
+
 
     @Override
     public void init() throws ServletException {
         store = HbStore.instOf();
-        LOG = LoggerFactory.getLogger(IndexServlet.class);
+        getServletContext().setAttribute("Hiber", store);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
-        if (req.getParameter("request").equals("GET request")) {
-            writer.print(getJSON(store.getNotDone()));
-            writer.flush();
-            writer.close();
-        }
-        if (req.getParameter("request").equals("GET All")) {
-            writer.print(getJSON(store.getAll()));
-            writer.flush();
-            writer.close();
-        }
+        Answer answer = new IndexAnswerGenerator(store, req.getParameter("request"));
+        writer.print(answer.toFormAnswer());
+        writer.flush();
     }
 
     @Override
@@ -69,9 +66,24 @@ public class IndexServlet extends HttpServlet {
         } else {
             String name = req.getParameter("name");
             String description = req.getParameter("description");
-            Task task = new Task(0, name, description, Timestamp.valueOf(LocalDateTime.now()), false);
-            store.add(task);
+            saveUserWithTask(name, description, req.getSession());
         }
+    }
+
+    /**
+     * Method of save user with task
+     *
+     * @param name
+     * @param description
+     * @param session
+     */
+    private void saveUserWithTask(String name, String description, HttpSession session) {
+        Task task = new Task(0, name, description, Timestamp.valueOf(LocalDateTime.now()), false);
+        task = (Task) store.add(task);
+        User user = (User) session.getAttribute("user");
+        user.setTask(task);
+        UserStorage userStore = (UserStorage) store;
+        userStore.updateUser(user);
     }
 
     /**
@@ -92,20 +104,6 @@ public class IndexServlet extends HttpServlet {
                 }
             });
         }
-    }
-
-    /**
-     * Method return ready json for send to client
-     *
-     * @return JSONObject
-     * @throws IOException
-     */
-    private JSONObject getJSON(List<Task> tasks) throws IOException {
-        JSONObject json = new JSONObject();
-        for (int i = 0; i < tasks.size(); i++) {
-            json.put(String.valueOf(i), tasks.get(i).getName());
-        }
-        return json;
     }
 
     @Override

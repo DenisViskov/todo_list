@@ -12,7 +12,8 @@
 
 
 <body>
-<form>
+<a href="sign.jsp">Sign in</a>
+<form id="addTask">
     <p>
         <label for="name">Task name:</label><br/>
         <input type="text" name="task" value="enter name" id="name"/><br>
@@ -21,34 +22,65 @@
                   cols="30" rows="7"></textarea>
     </p>
     <p>
-        <input type="submit" class="btn btn-primary" value="Add new task" onclick="sendData()"/>
+        <input type="submit" class="btn btn-primary" value="Add new task"/>
     </p>
 </form>
-<button type="submit" onclick="showAll()">Show All</button>
+<button type="submit" id="showAllButton">Show All</button>
 <form id="tasks">
 </form>
 </body>
 </html>
 
 <script>
+    /**
+     * Trigger button
+     */
+    $('#addTask').submit(function (e) {
+        e.preventDefault()
+        sendData()
+        document.getElementById('tasks').innerHTML = ''
+        setTimeout(onLoad, 500)
+    })
+
+    /**
+     * Trigger button
+     */
+    $('#showAllButton').click(function (e) {
+        e.preventDefault()
+        showAll()
+    })
+
+    /**
+     * Script on load page
+     */
     window.onload = function () {
+        onLoad()
+    }
+
+    /**
+     * GET request on take content
+     */
+    function onLoad() {
         $.ajax({
             type: 'GET',
             url: '<%=request.getContextPath()%>/index',
-            data: {request: "GET request"},
-            dataType: 'json',
+            data: {request: "on load page"},
+            contentType: "application/json",
             success: function (data) {
                 collectTasks(data)
             }
         });
     }
 
+    /**
+     * GET request on take content all tasks
+     */
     function showAll() {
         $.ajax({
             type: 'GET',
             url: '<%=request.getContextPath()%>/index',
-            data: {request: "GET All"},
-            dataType: 'json',
+            data: {request: "get all tasks"},
+            contentType: "application/json",
             success: function (data) {
                 document.getElementById('tasks').innerHTML = ''
                 collectTasks(data)
@@ -56,6 +88,10 @@
         });
     }
 
+    /**
+     * Function of build tasks
+     * @param data
+     */
     function collectTasks(data) {
         let p = document.createElement('p')
         let h2 = document.createElement('h2');
@@ -65,15 +101,25 @@
         for (key in data) {
             const name = data[key]
             let checkbox = document.createElement('div')
-            checkbox.innerHTML = name + '<input class="checkbox" type="checkbox" name=' + name + '>'
+            checkbox.innerHTML = "Task name : " + name + '<input class="checkbox" type="checkbox" name=' + name + '>' + " " + key
             p.appendChild(checkbox)
         }
         let button = document.createElement('div')
-        button.innerHTML = '<button type="submit" onclick="sendUpdate()">Update</button>'
+        button.innerHTML = '<button type="submit" id="updateButton">Update</button>'
+        button.addEventListener('click', function (e) {
+            e.preventDefault()
+            sendUpdate()
+            document.getElementById('tasks').innerHTML = ''
+            setTimeout(onLoad(), 1000)
+        })
         p.appendChild(button)
         form.appendChild(p)
     }
 
+    /**
+     * Validation form
+     * @returns {boolean}
+     */
     function validate() {
         const name = document.getElementById('name').value
         const description = document.getElementById('comment').value
@@ -84,6 +130,9 @@
         return true
     }
 
+    /**
+     * POST send new task
+     */
     function sendData() {
         if (validate()) {
             const name = document.getElementById('name').value
@@ -95,12 +144,15 @@
                     name: name,
                     description: description
                 },
-                dataType: 'json',
+                dataType: "json",
                 success: console.log('done')
             });
         }
     }
 
+    /**
+     * POST send update tasks
+     */
     function sendUpdate() {
         var name = new Array();
         var checkboxes = document.getElementsByClassName('checkbox');
@@ -114,7 +166,7 @@
             url: '<%=request.getContextPath()%>/index',
             data: {
                 name: name,
-                selected: true
+                selected: 'true'
             },
             dataType: 'json',
             success: console.log('done')
