@@ -36,7 +36,7 @@
     $("#form").submit(function (e) {
         e.preventDefault()
         sendData()
-        setTimeout(getAnswer, 500)
+        setTimeout(getAnswer, 1000)
     })
 
     function sendData() {

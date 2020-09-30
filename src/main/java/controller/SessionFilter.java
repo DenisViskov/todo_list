@@ -11,7 +11,7 @@ import java.io.IOException;
  * @version 1.0
  * @since 30.09.2020
  */
-@WebFilter(urlPatterns = "/todo_list/")
+@WebFilter(urlPatterns = "/*")
 public class SessionFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -22,6 +22,15 @@ public class SessionFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
+        String uri = req.getRequestURI();
+        if (uri.endsWith("/sign.jsp") || uri.endsWith("/sign")) {
+            filterChain.doFilter(req, resp);
+            return;
+        }
+        if (uri.endsWith("/registration.jsp") || uri.endsWith("/registration")) {
+            filterChain.doFilter(req, resp);
+            return;
+        }
         if (req.getSession().getAttribute("user") == null) {
             resp.sendRedirect(req.getContextPath() + "/sign.jsp");
         }
