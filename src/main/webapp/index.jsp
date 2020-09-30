@@ -39,7 +39,7 @@
         onLoad()
     })
 
-    $('#showAllButton').submit(function (e) {
+    $('#showAllButton').click(function (e) {
         e.preventDefault()
         showAll()
     })
