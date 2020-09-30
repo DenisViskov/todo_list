@@ -10,6 +10,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import persistence.HbStore;
 import persistence.Store;
+import persistence.UserStorage;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -68,7 +69,7 @@ public class IndexServletTest {
         verify(store).update(any());
     }
 
-    @Test
+    @Test(expected = ClassCastException.class)
     public void doPostAddUserTest() throws ServletException, IOException {
         HttpSession session = mock(HttpSession.class);
         Store store = mock(Store.class);
@@ -83,7 +84,6 @@ public class IndexServletTest {
         when(req.getParameter("name")).thenReturn("name");
         when(req.getParameter("desc")).thenReturn("desc");
         when(config.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(store.getAll()).thenReturn(List.of(new Task(0, "value", "desc", null, false)));
         when(session.getAttribute("user")).thenReturn(new User());
         servlet.init(config);
         servlet.doPost(req, resp);
