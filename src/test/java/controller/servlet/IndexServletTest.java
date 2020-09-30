@@ -69,10 +69,10 @@ public class IndexServletTest {
         verify(store).update(any());
     }
 
-    @Test(expected = ClassCastException.class)
+    @Test
     public void doPostAddUserTest() throws ServletException, IOException {
         HttpSession session = mock(HttpSession.class);
-        Store store = mock(Store.class);
+        Store store = mock(Store.class, withSettings().extraInterfaces(UserStorage.class));
         IndexServlet servlet = new IndexServlet();
         ServletConfig config = mock(ServletConfig.class);
         HttpServletRequest req = mock(HttpServletRequest.class);
