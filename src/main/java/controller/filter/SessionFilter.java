@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Class is a filter session
+ *
  * @author Денис Висков
  * @version 1.0
  * @since 30.09.2020

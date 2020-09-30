@@ -36,7 +36,6 @@ public class IndexServlet extends HttpServlet {
      * Storage
      */
     private Store store;
-
     /**
      * Logger
      */
@@ -71,6 +70,13 @@ public class IndexServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Method of save user with task
+     *
+     * @param name
+     * @param description
+     * @param session
+     */
     private void saveUserWithTask(String name, String description, HttpSession session) {
         Task task = new Task(0, name, description, Timestamp.valueOf(LocalDateTime.now()), false);
         task = (Task) store.add(task);

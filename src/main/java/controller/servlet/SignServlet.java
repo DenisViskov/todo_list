@@ -16,6 +16,8 @@ import java.io.PrintWriter;
 import java.util.List;
 
 /**
+ * Class is Sign Servlet
+ *
  * @author Денис Висков
  * @version 1.0
  * @since 27.09.2020
@@ -23,7 +25,13 @@ import java.util.List;
 @WebServlet("/sign")
 public class SignServlet extends HttpServlet {
 
+    /**
+     * Answer
+     */
     private final Answer answer = new SignAnswerGenerator();
+    /**
+     * Store
+     */
     private UserStorage storage;
 
     @Override
@@ -54,6 +62,12 @@ public class SignServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Method return user by given login
+     *
+     * @param login
+     * @return User
+     */
     private User findUser(String login) {
         List<User> users = storage.getAllUser();
         return users.stream()
@@ -62,6 +76,13 @@ public class SignServlet extends HttpServlet {
                 .get();
     }
 
+    /**
+     * Method of check user in DB
+     *
+     * @param login
+     * @param password
+     * @return boolean
+     */
     private boolean check(String login, String password) {
         List<User> users = storage.getAllUser();
         return users.stream()

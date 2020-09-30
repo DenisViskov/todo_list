@@ -15,6 +15,8 @@ import java.io.PrintWriter;
 import java.util.List;
 
 /**
+ * Class is a registration servlet
+ *
  * @author Денис Висков
  * @version 1.0
  * @since 27.09.2020
@@ -22,7 +24,13 @@ import java.util.List;
 @WebServlet("/registration")
 public class RegServlet extends HttpServlet {
 
+    /**
+     * Answer
+     */
     private final Answer answer = new RegAnswerGenerator();
+    /**
+     * Store
+     */
     private UserStorage store;
 
     @Override

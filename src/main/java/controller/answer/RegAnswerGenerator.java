@@ -3,6 +3,8 @@ package controller.answer;
 import org.json.JSONObject;
 
 /**
+ * CLass is registration answer generator
+ *
  * @author Денис Висков
  * @version 1.0
  * @since 29.09.2020
@@ -13,6 +15,11 @@ public class RegAnswerGenerator implements Answer<JSONObject> {
      */
     private volatile boolean lastOperation;
 
+    /**
+     * Method returns ready json for send to client
+     *
+     * @return JSONObject
+     */
     @Override
     public synchronized JSONObject toFormAnswer() {
         JSONObject json = new JSONObject();
@@ -26,11 +33,11 @@ public class RegAnswerGenerator implements Answer<JSONObject> {
         return json;
     }
 
-    @Override
-    public synchronized boolean isLastOperation() {
-        return lastOperation;
-    }
-
+    /**
+     * Setter
+     *
+     * @param lastOperation
+     */
     @Override
     public synchronized void setLastOperation(boolean lastOperation) {
         this.lastOperation = lastOperation;

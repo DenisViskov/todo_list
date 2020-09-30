@@ -122,6 +122,12 @@ public class HbStore implements Store<Task>, UserStorage<User> {
         session.close();
     }
 
+    /**
+     * Method add new user in DB
+     *
+     * @param user
+     * @return User
+     */
     @Override
     public User addUser(User user) {
         Session session = sf.openSession();
@@ -132,6 +138,11 @@ public class HbStore implements Store<Task>, UserStorage<User> {
         return user;
     }
 
+    /**
+     * Method of update user in DB
+     *
+     * @param user
+     */
     @Override
     public void updateUser(User user) {
         Session session = sf.openSession();
@@ -141,6 +152,11 @@ public class HbStore implements Store<Task>, UserStorage<User> {
         session.close();
     }
 
+    /**
+     * Method returns all users from DB
+     *
+     * @return list
+     */
     @Override
     public List<User> getAllUser() {
         return find(

@@ -3,6 +3,8 @@ package controller.answer;
 import org.json.JSONObject;
 
 /**
+ * Class is a sign answer generator
+ *
  * @author Денис Висков
  * @version 1.0
  * @since 29.09.2020
@@ -14,6 +16,11 @@ public class SignAnswerGenerator implements Answer<JSONObject> {
      */
     private volatile boolean lastOperation;
 
+    /**
+     * Method return ready json for send to client
+     *
+     * @return JSONObject
+     */
     @Override
     public synchronized JSONObject toFormAnswer() {
         JSONObject json = new JSONObject();
@@ -27,11 +34,11 @@ public class SignAnswerGenerator implements Answer<JSONObject> {
         return json;
     }
 
-    @Override
-    public synchronized boolean isLastOperation() {
-        return lastOperation;
-    }
-
+    /**
+     * Setter
+     *
+     * @param lastOperation
+     */
     @Override
     public synchronized void setLastOperation(boolean lastOperation) {
         this.lastOperation = lastOperation;

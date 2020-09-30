@@ -32,6 +32,9 @@
 </html>
 
 <script>
+    /**
+     * Trigger button
+     */
     $('#addTask').submit(function (e) {
         e.preventDefault()
         sendData()
@@ -39,15 +42,24 @@
         setTimeout(onLoad, 500)
     })
 
+    /**
+     * Trigger button
+     */
     $('#showAllButton').click(function (e) {
         e.preventDefault()
         showAll()
     })
 
+    /**
+     * Script on load page
+     */
     window.onload = function () {
         onLoad()
     }
 
+    /**
+     * GET request on take content
+     */
     function onLoad() {
         $.ajax({
             type: 'GET',
@@ -60,6 +72,9 @@
         });
     }
 
+    /**
+     * GET request on take content all tasks
+     */
     function showAll() {
         $.ajax({
             type: 'GET',
@@ -73,6 +88,10 @@
         });
     }
 
+    /**
+     * Function of build tasks
+     * @param data
+     */
     function collectTasks(data) {
         let p = document.createElement('p')
         let h2 = document.createElement('h2');
@@ -97,6 +116,10 @@
         form.appendChild(p)
     }
 
+    /**
+     * Validation form
+     * @returns {boolean}
+     */
     function validate() {
         const name = document.getElementById('name').value
         const description = document.getElementById('comment').value
@@ -107,6 +130,9 @@
         return true
     }
 
+    /**
+     * POST send new task
+     */
     function sendData() {
         if (validate()) {
             const name = document.getElementById('name').value
@@ -124,6 +150,9 @@
         }
     }
 
+    /**
+     * POST send update tasks
+     */
     function sendUpdate() {
         var name = new Array();
         var checkboxes = document.getElementsByClassName('checkbox');

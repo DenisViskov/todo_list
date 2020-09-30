@@ -35,12 +35,19 @@
 </html>
 
 <script>
+    /**
+     * Script click button
+     */
     $('#form').submit(function (e) {
         e.preventDefault()
         sendData();
         setTimeout(getAnswer, 500)
     })
 
+    /**
+     * Validation form fields
+     * @returns {boolean}
+     */
     function validation() {
         const password = document.getElementById("password").value
         const confirm = document.getElementById("confirm_password").value
@@ -51,6 +58,9 @@
         return true
     }
 
+    /**
+     * POST request sending form
+     */
     function sendData() {
         if (validation()) {
             const login = document.getElementById('login').value
@@ -70,6 +80,9 @@
         }
     }
 
+    /**
+     * GET answer on send data
+     */
     function getAnswer() {
         $.ajax({
             type: 'GET',
@@ -84,6 +97,10 @@
         })
     }
 
+    /**
+     * Form to message for user
+     * @param data
+     */
     function putAnswer(data) {
         const answer = data['user']
         let body = document.getElementById('body')

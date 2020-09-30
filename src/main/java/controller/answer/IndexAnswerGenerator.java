@@ -10,13 +10,21 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Class is an Index answer generator
+ *
  * @author Денис Висков
  * @version 1.0
  * @since 29.09.2020
  */
 public class IndexAnswerGenerator implements Answer<JSONObject> {
 
+    /**
+     * Store
+     */
     private final Store store;
+    /**
+     * Key
+     */
     private final String key;
 
     public IndexAnswerGenerator(Store store, String key) {
@@ -24,6 +32,11 @@ public class IndexAnswerGenerator implements Answer<JSONObject> {
         this.key = key;
     }
 
+    /**
+     * Method of generate answer
+     *
+     * @return JSONObject
+     */
     @Override
     public JSONObject toFormAnswer() {
         JSONObject json = new JSONObject();
@@ -62,13 +75,12 @@ public class IndexAnswerGenerator implements Answer<JSONObject> {
         return json;
     }
 
+    /**
+     * Setter
+     *
+     * @param lastOperation
+     */
     @Override
     public void setLastOperation(boolean lastOperation) {
-
-    }
-
-    @Override
-    public boolean isLastOperation() {
-        return false;
     }
 }

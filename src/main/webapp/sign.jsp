@@ -33,12 +33,18 @@
 </html>
 
 <script>
+    /**
+     * Script click on button
+     */
     $("#form").submit(function (e) {
         e.preventDefault()
         sendData()
         setTimeout(getAnswer, 1000)
     })
 
+    /**
+     * POST send data from form
+     */
     function sendData() {
         const login = document.getElementById('login').value
         const password = document.getElementById("password").value
@@ -54,6 +60,9 @@
         })
     }
 
+    /**
+     * GET answer
+     */
     function getAnswer() {
         $.ajax({
             type: 'GET',
@@ -68,6 +77,10 @@
         })
     }
 
+    /**
+     * Show message to client
+     * @param data
+     */
     function showMessage(data) {
         const message = data['answer']
         let body = document.getElementById('body')
@@ -82,6 +95,9 @@
         }
     }
 
+    /**
+     * Execute redirect on index page
+     */
     function redirect() {
         document.location.href = '<%=request.getContextPath()%>/index.jsp'
     }
