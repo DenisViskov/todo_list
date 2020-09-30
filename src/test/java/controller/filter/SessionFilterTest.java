@@ -1,5 +1,6 @@
 package controller.filter;
 
+import model.User;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -54,5 +55,16 @@ public class SessionFilterTest {
         verify(resp).sendRedirect(anyString());
     }
 
-
+    @Test
+    public void whenWeHaveUserTest() throws IOException, ServletException {
+        HttpServletRequest req = mock(HttpServletRequest.class);
+        HttpServletResponse resp = mock(HttpServletResponse.class);
+        FilterChain filterChain = mock(FilterChain.class);
+        HttpSession session = mock(HttpSession.class);
+        when(req.getRequestURI()).thenReturn("/");
+        when(req.getSession()).thenReturn(session);
+        when(session.getAttribute("user")).thenReturn(new User());
+        new SessionFilter().doFilter(req, resp, filterChain);
+        verify(filterChain).doFilter(req, resp);
+    }
 }
