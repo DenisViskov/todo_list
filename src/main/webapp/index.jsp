@@ -8,6 +8,17 @@
             crossorigin="anonymous"></script>
     <meta charset="utf-8">
     <title>Tasks</title>
+
+    <style>
+        h1 {
+            font-family: 'Times New Roman', Times, serif; /* Гарнитура текста */
+            font-size: 250%; /* Размер шрифта в процентах */
+        }
+        p {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: 15pt; /* Размер шрифта в пунктах */
+        }
+    </style>
 </head>
 
 
@@ -133,28 +144,38 @@
      * @param data
      */
     function collectTasks(data) {
-        let p = document.createElement('p')
-        let h2 = document.createElement('h2');
-        h2.innerText = 'Tasks:'
-        let form = document.getElementById('tasks')
-        form.appendChild(h2)
+        let div = document.createElement('div')
+        let h2 = document.createElement('h2')
+        h2.innerText = 'Tasks: '
+        div.appendChild(h2)
         for (key in data) {
-            const name = data[key]
-            let checkbox = document.createElement('div')
-            checkbox.innerHTML = "Task name : " + name + '<input class="checkbox" type="checkbox" name=' + name + '>' + " " + key
-            p.appendChild(checkbox)
+            const taskName = data[key]
+            const userName = key
+            let label = document.createElement('label')
+            let fontWithText = document.createElement('font')
+            fontWithText.setAttribute('size', '4')
+            fontWithText.innerText = 'Task name: ' + taskName + ' ; ' + 'user: ' + userName
+            label.appendChild(fontWithText)
+            let input = document.createElement('input')
+            input.setAttribute('class', 'checkbox')
+            input.setAttribute('type', 'checkbox')
+            input.setAttribute('name', taskName)
+            label.appendChild(input)
+            div.appendChild(label)
         }
         let button = document.createElement('div')
-        button.innerHTML = '<button type="submit" id="updateButton">Update</button>'
+        button.innerHTML = '<button type="submit">Update</button>'
         button.addEventListener('click', function (e) {
             e.preventDefault()
             sendUpdate()
             document.getElementById('tasks').innerHTML = ''
             setTimeout(onLoad(), 1000)
         })
-        p.appendChild(button)
-        form.appendChild(p)
+        div.appendChild(button)
+        let form = document.getElementById('tasks')
+        form.appendChild(div)
     }
+
 
     /**
      * Validation form
