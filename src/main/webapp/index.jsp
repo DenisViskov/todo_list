@@ -54,7 +54,40 @@
      * Script on load page
      */
     window.onload = function () {
+        pullCategories()
         onLoad()
+    }
+
+    function pullCategories() {
+        $.ajax({
+            type: 'GET',
+            url: '<%=request.getContextPath()%>/index',
+            data: {request: "pull categories"},
+            contentType: "application/json",
+            success: function (data) {
+                putCategoriesOnPage(data)
+            }
+        });
+    }
+
+    /**
+     * Put categories on page
+     */
+    function putCategoriesOnPage(data) {
+        let label = document.createElement('label')
+        label.setAttribute('for', 'categories')
+        label.innerText = 'Choose categories:'
+        label.after('<br>')
+        for (key in data) {
+            const name = data[key]
+            const id = key
+            let checkbox = document.createElement('input')
+            checkbox.setAttribute('type', 'checkbox')
+            checkbox.setAttribute('name', id)
+            checkbox.setAttribute('class', 'checkboxCategories')
+            checkbox.after(name)
+            label.after(checkbox)
+        }
     }
 
     /**
@@ -135,6 +168,13 @@
      */
     function sendData() {
         if (validate()) {
+            var categories = new Array();
+            var checkboxes = document.getElementsByClassName('checkboxCategories');
+            for (key in checkboxes) {
+                if (checkboxes[key].checked) {
+                    name[key] = checkboxes[key].name
+                }
+            }
             const name = document.getElementById('name').value
             const description = document.getElementById('comment').value
             $.ajax({
@@ -142,7 +182,8 @@
                 url: '<%=request.getContextPath()%>/index',
                 data: {
                     name: name,
-                    description: description
+                    description: description,
+                    categories: categories
                 },
                 dataType: "json",
                 success: console.log('done')

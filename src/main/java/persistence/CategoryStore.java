@@ -1,5 +1,7 @@
 package persistence;
 
+import java.util.List;
+
 /**
  * Interface of category
  *
@@ -15,4 +17,11 @@ public interface CategoryStore<V> {
      * @return V
      */
     V getCategory(int id);
+
+    /**
+     * Method should return all categories from DB
+     *
+     * @return List
+     */
+    List<V> getAllCategories();
 }

@@ -1,8 +1,10 @@
 package controller.answer;
 
+import model.Category;
 import model.Task;
 import model.User;
 import org.json.JSONObject;
+import persistence.CategoryStore;
 import persistence.TaskStore;
 import persistence.UserStorage;
 
@@ -54,6 +56,9 @@ public class IndexAnswerGenerator implements Answer<JSONObject> {
                 e.printStackTrace();
             }
         }
+        if (key.equals("pull categories")) {
+            json = getJsonCategories();
+        }
         return json;
     }
 
@@ -72,6 +77,21 @@ public class IndexAnswerGenerator implements Answer<JSONObject> {
                 json.put(user.getLogin(), task.getName());
             }
         }));
+        return json;
+    }
+
+    /**
+     * Return ready json for send
+     *
+     * @return JSONObject
+     */
+    private JSONObject getJsonCategories() {
+        CategoryStore store = (CategoryStore) taskStore;
+        List<Category> categories = store.getAllCategories();
+        JSONObject json = new JSONObject();
+        categories
+                .forEach(category -> json.put(String.valueOf(category.getId())
+                        , category.getName()));
         return json;
     }
 

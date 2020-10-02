@@ -179,6 +179,18 @@ public class HbStore implements TaskStore<Task>, UserStorage<User>, CategoryStor
     }
 
     /**
+     * Method return all categories from DB
+     *
+     * @return List
+     */
+    @Override
+    public List<Category> getAllCategories() {
+        return find(
+                session -> session.createQuery("from model.Category").list()
+        );
+    }
+
+    /**
      * Method of destroy registry
      *
      * @throws Exception
