@@ -6,8 +6,6 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.Mockito;
 import persistence.HbStore;
-import persistence.Store;
-import persistence.UserStorage;
 
 import java.util.List;
 

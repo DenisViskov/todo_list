@@ -3,7 +3,7 @@ package controller.answer;
 import model.Task;
 import model.User;
 import org.json.JSONObject;
-import persistence.Store;
+import persistence.TaskStore;
 import persistence.UserStorage;
 
 import java.io.IOException;
@@ -21,14 +21,14 @@ public class IndexAnswerGenerator implements Answer<JSONObject> {
     /**
      * Store
      */
-    private final Store store;
+    private final TaskStore taskStore;
     /**
      * Key
      */
     private final String key;
 
-    public IndexAnswerGenerator(Store store, String key) {
-        this.store = store;
+    public IndexAnswerGenerator(TaskStore taskStore, String key) {
+        this.taskStore = taskStore;
         this.key = key;
     }
 
@@ -42,14 +42,14 @@ public class IndexAnswerGenerator implements Answer<JSONObject> {
         JSONObject json = new JSONObject();
         if (key.equals("on load page")) {
             try {
-                json = getJSON(store.getNotDone());
+                json = getJSON(taskStore.getNotDone());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         if (key.equals("get all tasks")) {
             try {
-                json = getJSON(store.getAll());
+                json = getJSON(taskStore.getAll());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -64,7 +64,7 @@ public class IndexAnswerGenerator implements Answer<JSONObject> {
      * @throws IOException
      */
     private JSONObject getJSON(List<Task> tasks) throws IOException {
-        UserStorage userStorage = (UserStorage) store;
+        UserStorage userStorage = (UserStorage) taskStore;
         List<User> users = userStorage.getAllUser();
         JSONObject json = new JSONObject();
         tasks.forEach(task -> users.forEach(user -> {

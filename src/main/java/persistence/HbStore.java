@@ -18,7 +18,7 @@ import java.util.function.Function;
  * @version 1.0
  * @since 20.09.2020
  */
-public class HbStore implements Store<Task>, UserStorage<User> {
+public class HbStore implements TaskStore<Task>, UserStorage<User> {
     /**
      * Registry
      */
@@ -40,7 +40,7 @@ public class HbStore implements Store<Task>, UserStorage<User> {
         /**
          * Instance
          */
-        private static final Store INST = new HbStore();
+        private static final TaskStore INST = new HbStore();
     }
 
     /**
@@ -48,7 +48,7 @@ public class HbStore implements Store<Task>, UserStorage<User> {
      *
      * @return store
      */
-    public static Store instOf() {
+    public static TaskStore instOf() {
         return Lazy.INST;
     }
 
