@@ -16,7 +16,7 @@
 <form id="addTask">
     <p>
         <label for="name">Task name:</label><br/>
-        <input type="text" name="task" value="enter name" id="name"/><br/>
+        <input type="text" name="task" value="enter name" id="name"/><br>
         <label for="comment">New task:</label><br/>
         <textarea id="comment" name="comment" placeholder="Description"
                   cols="30" rows="7"></textarea>
@@ -76,21 +76,25 @@
     function putCategoriesOnPage(data) {
         let label = document.createElement('label')
         label.setAttribute('for', 'categories')
-        label.innerText = 'Choose categories:'
+        label.innerText = 'Choose categories: '
         label.after('<br/>')
         for (key in data) {
             const name = data[key]
             const id = key
+            let innerLabel = document.createElement('label')
+            innerLabel.setAttribute('for', name)
+            innerLabel.innerText = name + ' '
             let checkbox = document.createElement('input')
             checkbox.setAttribute('type', 'checkbox')
             checkbox.setAttribute('name', id)
             checkbox.setAttribute('class', 'checkboxCategories')
-            checkbox.setAttribute('placeholder', name)
-            label.appendChild(checkbox)
+            innerLabel.appendChild(checkbox)
+            innerLabel.after('<br/>')
+            label.appendChild(innerLabel)
         }
         let form = document.getElementById('addTask')
-        let nameField = form.getElementsByTagName('input').item(0)
-        nameField.after(label)
+        let p = form.getElementsByTagName('p').item(0)
+        p.after(label)
     }
 
     /**
