@@ -20,5 +20,6 @@
 
         <mapping class="model.Task"/>
         <mapping class="model.User"/>
+        <mapping class="model.Category"/>
     </session-factory>
 </hibernate-configuration>

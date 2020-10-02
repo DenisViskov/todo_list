@@ -2,6 +2,8 @@ package model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -36,6 +38,11 @@ public class Task {
      * Done
      */
     private boolean done;
+    /**
+     * Categories
+     */
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Category> categories = new ArrayList<>();
 
     public Task() {
     }
