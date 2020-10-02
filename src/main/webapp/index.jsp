@@ -16,7 +16,7 @@
 <form id="addTask">
     <p>
         <label for="name">Task name:</label><br/>
-        <input type="text" name="task" value="enter name" id="name"/><br>
+        <input type="text" name="task" value="enter name" id="name"/><br/>
         <label for="comment">New task:</label><br/>
         <textarea id="comment" name="comment" placeholder="Description"
                   cols="30" rows="7"></textarea>
@@ -77,7 +77,7 @@
         let label = document.createElement('label')
         label.setAttribute('for', 'categories')
         label.innerText = 'Choose categories:'
-        label.after('<br>')
+        label.after('<br/>')
         for (key in data) {
             const name = data[key]
             const id = key
@@ -85,9 +85,12 @@
             checkbox.setAttribute('type', 'checkbox')
             checkbox.setAttribute('name', id)
             checkbox.setAttribute('class', 'checkboxCategories')
-            checkbox.after(name)
-            label.after(checkbox)
+            checkbox.setAttribute('placeholder', name)
+            label.appendChild(checkbox)
         }
+        let form = document.getElementById('addTask')
+        let nameField = form.getElementsByTagName('input').item(0)
+        nameField.after(label)
     }
 
     /**
