@@ -55,6 +55,15 @@ public class Task {
         this.done = done;
     }
 
+    /**
+     * Method add category to list categories
+     *
+     * @param category
+     */
+    public void addCategory(Category category) {
+        categories.add(category);
+    }
+
     public int getId() {
         return id;
     }
@@ -95,6 +104,14 @@ public class Task {
         this.done = done;
     }
 
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -104,11 +121,12 @@ public class Task {
                 done == task.done &&
                 Objects.equals(name, task.name) &&
                 Objects.equals(description, task.description) &&
-                Objects.equals(created, task.created);
+                Objects.equals(created, task.created) &&
+                Objects.equals(categories, task.categories);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, created, done);
+        return Objects.hash(id, name, description, created, done, categories);
     }
 }
