@@ -179,7 +179,7 @@
             var checkboxes = document.getElementsByClassName('checkboxCategories');
             for (key in checkboxes) {
                 if (checkboxes[key].checked) {
-                    name[key] = checkboxes[key].name
+                    categories[key] = checkboxes[key].name
                 }
             }
             const name = document.getElementById('name').value

@@ -69,7 +69,7 @@ public class IndexServlet extends HttpServlet {
         } else {
             String name = req.getParameter("name");
             String description = req.getParameter("description");
-            String[] categoryID = req.getParameterValues("id[]");
+            String[] categoryID = req.getParameterValues("categories[]");
             saveUserWithTask(name, description, categoryID, req.getSession());
         }
     }
