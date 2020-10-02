@@ -9,10 +9,10 @@ package persistence;
  */
 public interface CategoryStore<V> {
     /**
-     * Method should save given category
+     * Method should return category by given id
      *
-     * @param category
+     * @param id
      * @return V
      */
-    V saveCategory(V category);
+    V getCategory(int id);
 }
