@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import persistence.CategoryStore;
 import persistence.HbStore;
 import persistence.TaskStore;
 import persistence.UserStorage;
@@ -71,7 +72,7 @@ public class IndexServletTest {
     @Test
     public void doPostAddUserTest() throws ServletException, IOException {
         HttpSession session = mock(HttpSession.class);
-        TaskStore taskStore = mock(TaskStore.class, withSettings().extraInterfaces(UserStorage.class));
+        TaskStore taskStore = mock(TaskStore.class, withSettings().extraInterfaces(UserStorage.class, CategoryStore.class));
         IndexServlet servlet = new IndexServlet();
         ServletConfig config = mock(ServletConfig.class);
         HttpServletRequest req = mock(HttpServletRequest.class);
@@ -80,6 +81,7 @@ public class IndexServletTest {
         PowerMockito.when(HbStore.instOf()).thenReturn(taskStore);
         when(req.getSession()).thenReturn(session);
         when(req.getParameter("selected")).thenReturn(null);
+        when(req.getParameterValues("categories[]")).thenReturn(new String[]{"1"});
         when(req.getParameter("name")).thenReturn("name");
         when(req.getParameter("desc")).thenReturn("desc");
         when(config.getServletContext()).thenReturn(mock(ServletContext.class));
