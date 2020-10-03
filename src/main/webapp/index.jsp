@@ -151,17 +151,18 @@
         for (key in data) {
             const taskName = data[key]
             const userName = key
-            let label = document.createElement('label')
+            let innerDiv = document.createElement('div')
             let fontWithText = document.createElement('font')
             fontWithText.setAttribute('size', '4')
             fontWithText.innerText = 'Task name: ' + taskName + ' ; ' + 'user: ' + userName
-            label.appendChild(fontWithText)
+            innerDiv.appendChild(fontWithText)
             let input = document.createElement('input')
             input.setAttribute('class', 'checkbox')
             input.setAttribute('type', 'checkbox')
             input.setAttribute('name', taskName)
-            label.appendChild(input)
-            div.appendChild(label)
+            innerDiv.appendChild(input)
+            innerDiv.after('<br>')
+            div.appendChild(innerDiv)
         }
         let button = document.createElement('div')
         button.innerHTML = '<button type="submit">Update</button>'
