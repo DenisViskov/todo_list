@@ -85,15 +85,15 @@
      * Put categories on page
      */
     function putCategoriesOnPage(data) {
-        let label = document.createElement('label')
-        label.setAttribute('for', 'categories')
-        label.innerText = 'Choose categories: '
-        label.after('<br/>')
+        let div = document.createElement('div')
+        div.setAttribute('for', 'categories')
+        div.innerText = 'Choose categories: '
+        div.after('<br/>')
         for (key in data) {
             const name = data[key]
             const id = key
             let innerLabel = document.createElement('label')
-            innerLabel.setAttribute('for', name)
+            innerLabel.setAttribute('for', 'checkbox')
             innerLabel.innerText = name + ' '
             let checkbox = document.createElement('input')
             checkbox.setAttribute('type', 'checkbox')
@@ -101,11 +101,11 @@
             checkbox.setAttribute('class', 'checkboxCategories')
             innerLabel.appendChild(checkbox)
             innerLabel.after('<br/>')
-            label.appendChild(innerLabel)
+            div.appendChild(innerLabel)
         }
         let form = document.getElementById('addTask')
         let p = form.getElementsByTagName('p').item(0)
-        p.after(label)
+        p.after(div)
     }
 
     /**
