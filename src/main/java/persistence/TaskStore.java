@@ -13,7 +13,7 @@ import java.util.function.Function;
  * @version 1.0
  * @since 20.09.2020
  */
-public interface Store<V> extends AutoCloseable {
+public interface TaskStore<V> extends AutoCloseable {
     /**
      * Method should add task to DB
      *

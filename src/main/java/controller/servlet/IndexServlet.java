@@ -2,12 +2,14 @@ package controller.servlet;
 
 import controller.answer.Answer;
 import controller.answer.IndexAnswerGenerator;
+import model.Category;
 import model.Task;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import persistence.CategoryStore;
 import persistence.HbStore;
-import persistence.Store;
+import persistence.TaskStore;
 import persistence.UserStorage;
 
 import javax.servlet.ServletException;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,7 +38,7 @@ public class IndexServlet extends HttpServlet {
     /**
      * Storage
      */
-    private Store store;
+    private TaskStore taskStore;
     /**
      * Logger
      */
@@ -44,15 +47,15 @@ public class IndexServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        store = HbStore.instOf();
-        getServletContext().setAttribute("Hiber", store);
+        taskStore = HbStore.instOf();
+        getServletContext().setAttribute("Hiber", taskStore);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
-        Answer answer = new IndexAnswerGenerator(store, req.getParameter("request"));
+        Answer answer = new IndexAnswerGenerator(taskStore, req.getParameter("request"));
         writer.print(answer.toFormAnswer());
         writer.flush();
     }
@@ -66,7 +69,8 @@ public class IndexServlet extends HttpServlet {
         } else {
             String name = req.getParameter("name");
             String description = req.getParameter("description");
-            saveUserWithTask(name, description, req.getSession());
+            String[] categoryID = req.getParameterValues("categories[]");
+            saveUserWithTask(name, description, categoryID, req.getSession());
         }
     }
 
@@ -75,14 +79,19 @@ public class IndexServlet extends HttpServlet {
      *
      * @param name
      * @param description
+     * @param categoryID
      * @param session
      */
-    private void saveUserWithTask(String name, String description, HttpSession session) {
+    private void saveUserWithTask(String name, String description, String[] categoryID, HttpSession session) {
         Task task = new Task(0, name, description, Timestamp.valueOf(LocalDateTime.now()), false);
-        task = (Task) store.add(task);
+        CategoryStore categoryStore = (CategoryStore) taskStore;
+        for (String id : categoryID) {
+            task.addCategory((Category) categoryStore.getCategory(Integer.valueOf(id)));
+        }
+        task = (Task) taskStore.add(task);
         User user = (User) session.getAttribute("user");
         user.setTask(task);
-        UserStorage userStore = (UserStorage) store;
+        UserStorage userStore = (UserStorage) taskStore;
         userStore.updateUser(user);
     }
 
@@ -92,15 +101,17 @@ public class IndexServlet extends HttpServlet {
      * @param names
      */
     private void updateTasks(String[] names) {
-        List<Task> all = store.getAll();
+        List<Task> all = taskStore.getAll();
         for (String name : names) {
             all.forEach(task -> {
                 if (task.getName().equals(name)) {
-                    store.update(new Task(task.getId(),
+                    Task result = new Task(task.getId(),
                             task.getName(),
                             task.getDescription(),
                             task.getCreated(),
-                            true));
+                            true);
+                    result.setCategories(task.getCategories());
+                    taskStore.update(result);
                 }
             });
         }
@@ -109,7 +120,7 @@ public class IndexServlet extends HttpServlet {
     @Override
     public void destroy() {
         try {
-            store.close();
+            taskStore.close();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             e.printStackTrace();

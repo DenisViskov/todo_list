@@ -2,6 +2,8 @@ package model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -36,6 +38,11 @@ public class Task {
      * Done
      */
     private boolean done;
+    /**
+     * Categories
+     */
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Category> categories = new ArrayList<>();
 
     public Task() {
     }
@@ -46,6 +53,15 @@ public class Task {
         this.description = description;
         this.created = created;
         this.done = done;
+    }
+
+    /**
+     * Method add category to list categories
+     *
+     * @param category
+     */
+    public void addCategory(Category category) {
+        categories.add(category);
     }
 
     public int getId() {
@@ -88,6 +104,14 @@ public class Task {
         this.done = done;
     }
 
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,11 +121,12 @@ public class Task {
                 done == task.done &&
                 Objects.equals(name, task.name) &&
                 Objects.equals(description, task.description) &&
-                Objects.equals(created, task.created);
+                Objects.equals(created, task.created) &&
+                Objects.equals(categories, task.categories);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, created, done);
+        return Objects.hash(id, name, description, created, done, categories);
     }
 }

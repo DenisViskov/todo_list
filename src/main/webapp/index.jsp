@@ -8,6 +8,17 @@
             crossorigin="anonymous"></script>
     <meta charset="utf-8">
     <title>Tasks</title>
+
+    <style>
+        h1 {
+            font-family: 'Times New Roman', Times, serif; /* Гарнитура текста */
+            font-size: 250%; /* Размер шрифта в процентах */
+        }
+        p {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: 15pt; /* Размер шрифта в пунктах */
+        }
+    </style>
 </head>
 
 
@@ -54,7 +65,47 @@
      * Script on load page
      */
     window.onload = function () {
+        pullCategories()
         onLoad()
+    }
+
+    function pullCategories() {
+        $.ajax({
+            type: 'GET',
+            url: '<%=request.getContextPath()%>/index',
+            data: {request: "pull categories"},
+            contentType: "application/json",
+            success: function (data) {
+                putCategoriesOnPage(data)
+            }
+        });
+    }
+
+    /**
+     * Put categories on page
+     */
+    function putCategoriesOnPage(data) {
+        let div = document.createElement('div')
+        div.setAttribute('for', 'categories')
+        div.innerText = 'Choose categories: '
+        div.after('<br/>')
+        for (key in data) {
+            const name = data[key]
+            const id = key
+            let innerLabel = document.createElement('label')
+            innerLabel.setAttribute('for', 'checkbox')
+            innerLabel.innerText = name + ' '
+            let checkbox = document.createElement('input')
+            checkbox.setAttribute('type', 'checkbox')
+            checkbox.setAttribute('name', id)
+            checkbox.setAttribute('class', 'checkboxCategories')
+            innerLabel.appendChild(checkbox)
+            innerLabel.after('<br/>')
+            div.appendChild(innerLabel)
+        }
+        let form = document.getElementById('addTask')
+        let p = form.getElementsByTagName('p').item(0)
+        p.after(div)
     }
 
     /**
@@ -93,28 +144,39 @@
      * @param data
      */
     function collectTasks(data) {
-        let p = document.createElement('p')
-        let h2 = document.createElement('h2');
-        h2.innerText = 'Tasks:'
-        let form = document.getElementById('tasks')
-        form.appendChild(h2)
+        let div = document.createElement('div')
+        let h2 = document.createElement('h2')
+        h2.innerText = 'Tasks: '
+        div.appendChild(h2)
         for (key in data) {
-            const name = data[key]
-            let checkbox = document.createElement('div')
-            checkbox.innerHTML = "Task name : " + name + '<input class="checkbox" type="checkbox" name=' + name + '>' + " " + key
-            p.appendChild(checkbox)
+            const taskName = data[key]
+            const userName = key
+            let innerDiv = document.createElement('div')
+            let fontWithText = document.createElement('font')
+            fontWithText.setAttribute('size', '4')
+            fontWithText.innerText = 'Task name: ' + taskName + ' ; ' + 'user: ' + userName
+            innerDiv.appendChild(fontWithText)
+            let input = document.createElement('input')
+            input.setAttribute('class', 'checkbox')
+            input.setAttribute('type', 'checkbox')
+            input.setAttribute('name', taskName)
+            innerDiv.appendChild(input)
+            innerDiv.after('<br>')
+            div.appendChild(innerDiv)
         }
         let button = document.createElement('div')
-        button.innerHTML = '<button type="submit" id="updateButton">Update</button>'
+        button.innerHTML = '<button type="submit">Update</button>'
         button.addEventListener('click', function (e) {
             e.preventDefault()
             sendUpdate()
             document.getElementById('tasks').innerHTML = ''
             setTimeout(onLoad(), 1000)
         })
-        p.appendChild(button)
-        form.appendChild(p)
+        div.appendChild(button)
+        let form = document.getElementById('tasks')
+        form.appendChild(div)
     }
+
 
     /**
      * Validation form
@@ -135,6 +197,13 @@
      */
     function sendData() {
         if (validate()) {
+            var categories = new Array();
+            var checkboxes = document.getElementsByClassName('checkboxCategories');
+            for (key in checkboxes) {
+                if (checkboxes[key].checked) {
+                    categories[key] = checkboxes[key].name
+                }
+            }
             const name = document.getElementById('name').value
             const description = document.getElementById('comment').value
             $.ajax({
@@ -142,7 +211,8 @@
                 url: '<%=request.getContextPath()%>/index',
                 data: {
                     name: name,
-                    description: description
+                    description: description,
+                    categories: categories
                 },
                 dataType: "json",
                 success: console.log('done')
