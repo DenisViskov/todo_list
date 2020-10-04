@@ -14,6 +14,7 @@
             font-family: 'Times New Roman', Times, serif; /* Гарнитура текста */
             font-size: 250%; /* Размер шрифта в процентах */
         }
+
         p {
             font-family: Verdana, Arial, Helvetica, sans-serif;
             font-size: 15pt; /* Размер шрифта в пунктах */
@@ -199,9 +200,10 @@
         if (validate()) {
             var categories = new Array();
             var checkboxes = document.getElementsByClassName('checkboxCategories');
+            var index = 0;
             for (key in checkboxes) {
                 if (checkboxes[key].checked) {
-                    categories[key] = checkboxes[key].name
+                    categories[index++] = checkboxes[key].name
                 }
             }
             const name = document.getElementById('name').value

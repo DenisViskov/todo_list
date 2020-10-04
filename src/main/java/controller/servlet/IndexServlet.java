@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,7 +84,7 @@ public class IndexServlet extends HttpServlet {
      * @param session
      */
     private void saveUserWithTask(String name, String description, String[] categoryID, HttpSession session) {
-        Task task = new Task(0, name, description, Timestamp.valueOf(LocalDateTime.now()), false);
+        Task task = new Task(0, name, description, new Date(), false);
         CategoryStore categoryStore = (CategoryStore) taskStore;
         for (String id : categoryID) {
             task.addCategory((Category) categoryStore.getCategory(Integer.valueOf(id)));
