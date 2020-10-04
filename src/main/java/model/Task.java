@@ -3,6 +3,7 @@ package model;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +34,8 @@ public class Task {
     /**
      * Time created
      */
-    private Timestamp created;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
     /**
      * Done
      */
@@ -47,7 +49,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(int id, String name, String description, Timestamp created, boolean done) {
+    public Task(int id, String name, String description, Date created, boolean done) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -88,11 +90,11 @@ public class Task {
         this.description = description;
     }
 
-    public Timestamp getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(Timestamp created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
